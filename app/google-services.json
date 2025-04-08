@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "390950658331",
+    "project_id": "stores-9a262",
+    "storage_bucket": "stores-9a262.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:390950658331:android:b46bb76d54cb179143f3be",
+        "android_client_info": {
+          "package_name": "com.example.electricmarkets"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUKvXbrvMqaLAOL_-Jlm5VbXkazopC5Ww"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
