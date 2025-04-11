@@ -1,5 +1,5 @@
 
-package com.example.electricmarkets.model
+package model.reponsitory
 
 import com.google.firebase.auth.FirebaseAuth
 

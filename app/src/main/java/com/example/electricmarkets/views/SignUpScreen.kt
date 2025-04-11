@@ -17,9 +17,10 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.livedata.observeAsState
-
+import androidx.navigation.NavController
 @Composable
 fun SignUpScreen(
+    navController: NavController,
     authViewModel: AuthViewModel = viewModel(),
     onSignUpClick: (String, String) -> Unit,
     onLoginClick: () -> Unit
@@ -94,7 +95,10 @@ fun SignUpScreen(
                 } else if (password.length < 6 || !password[0].isUpperCase()) {
                     authViewModel.setErrorMessage("Mật khẩu phải có ít nhất 6 kí tự và chữ cái đầu phải viết hoa!")
                 } else {
-                    authViewModel.register(email, password)
+                    authViewModel.register(email, password) {
+                        // Quay lại màn hình đăng nhập sau khi đăng ký thành công
+                        navController.popBackStack()
+                    }
                 }
             },
             modifier = Modifier.fillMaxWidth()
@@ -118,4 +122,6 @@ fun SignUpScreen(
 fun isValidEmail(email: String): Boolean {
     return Patterns.EMAIL_ADDRESS.matcher(email).matches()
 }
+
+
 

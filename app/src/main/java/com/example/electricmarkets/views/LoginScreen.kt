@@ -1,32 +1,28 @@
 package com.example.electricmarkets.views
 
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.clickable
+import androidx.compose.material3.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.navigation.NavController
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.electricmarkets.viewmodel.AuthViewModel
-import com.google.firebase.auth.FirebaseAuth
-import androidx.compose.runtime.livedata.observeAsState
 
 @Composable
 fun LoginScreen(
-    authViewModel: AuthViewModel = viewModel(),
-    onLoginClick: (String, String) -> Unit,
-    onSignUpClick: () -> Unit
+    authViewModel: AuthViewModel,
+    navController: NavController
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf("") }
 
-    // Collect error message from ViewModel if any
     val errorMessageState = authViewModel.errorMessage.observeAsState("")
     errorMessage = errorMessageState.value
 
@@ -74,7 +70,14 @@ fun LoginScreen(
                 if (email.isEmpty() || password.isEmpty()) {
                     authViewModel.setErrorMessage("Vui lòng nhập đầy đủ thông tin!")
                 } else {
-                    authViewModel.login(email, password)
+                    // Gọi login với onSuccess callback để điều hướng đến Home
+                    authViewModel.login(email, password) {
+                        // Điều hướng đến HomeScreen sau khi đăng nhập thành công
+                        navController.navigate("home") {
+                            // Đảm bảo người dùng không quay lại màn hình login
+                            popUpTo("login") { inclusive = true }
+                        }
+                    }
                 }
             },
             modifier = Modifier.fillMaxWidth()
@@ -88,7 +91,7 @@ fun LoginScreen(
             text = "Chưa có tài khoản? Đăng ký",
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier
-                .clickable { onSignUpClick() }
+                .clickable { navController.navigate("signup") } // Điều hướng đến màn hình đăng ký
                 .padding(8.dp)
         )
     }
