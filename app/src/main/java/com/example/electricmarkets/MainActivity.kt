@@ -7,6 +7,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import com.example.electricmarkets.ui.theme.ElectricMarketsTheme
 import com.example.electricmarkets.navigation.Navigation
+import com.example.electricmarkets.views.HomeScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

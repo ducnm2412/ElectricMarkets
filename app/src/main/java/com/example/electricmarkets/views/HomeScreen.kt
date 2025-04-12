@@ -1,94 +1,108 @@
 package com.example.electricmarkets.views
 
-import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.electricmarkets.R
-import model.data.Product
-import viewmodel.ProductViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun HomeScreen(productViewModel: ProductViewModel = viewModel()) {
-    val context = LocalContext.current
-    val productList by productViewModel.productList.observeAsState(listOf())
+fun HomeScreen(){
+    val products = List(7) {
+        Product(
+            name = "Tủ lạnh SamSum inverter",
+            price = "19.790.000",
+            oldPrice = "22.490.000",
+            imageRes = R.drawable.tulanh
+        )
+    }
+    Column(
+        modifier = Modifier.fillMaxSize().background(color = Color.White)
+    ) {
 
-    Column(modifier = Modifier.padding(16.dp)) {
+        HeadderScreen()
 
-        // ✅ Nút thêm sản phẩm mẫu
-        Button(
-            onClick = {
-                productViewModel.addDefaultProducts()
-                Toast.makeText(context, "✅ Đã thêm sản phẩm mẫu!", Toast.LENGTH_SHORT).show()
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp)
+        MenuMiniSCreen()
+
+        Card(onClick = {},
+            modifier = Modifier,
+            colors = CardDefaults.cardColors(
+                containerColor = Color.White
+            )) {
+            Image(painter = painterResource(id = R.drawable.quangcao),
+                contentDescription = null,
+                modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(8.dp)),
+                contentScale = ContentScale.FillWidth)
+        }
+
+        Column(
+            modifier = Modifier.fillMaxWidth().background(color = Color(0xFF9DDEFB))
         ) {
-            Text("➕ Thêm sản phẩm mẫu")
-        }
-
-        // 🔍 Tìm kiếm
-        TextField(
-            value = TextFieldValue(""),
-            onValueChange = {},
-            label = { Text("Tìm Kiếm...") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp)
-        )
-
-        // 🔖 Sản phẩm giảm giá
-        Text(text = "Sản phẩm giảm giá", style = MaterialTheme.typography.titleMedium)
-        LazyRow(modifier = Modifier.fillMaxWidth()) {
-            items(productList) { product ->
-                ProductItem(product = product)
+            Row(
+                modifier = Modifier.fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text("SẢN PHẨM ĐANG GIẢM GIÁ",
+                    fontSize = 16.sp,
+                    color = Color(0xFF165273),
+                    modifier = Modifier.padding(0.dp)
+                )
+                Card(onClick = {},
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color(0xFF9DDEFB)
+                    )) {
+                    Text("Xem thêm sản phẩm  --->",
+                        color = Color(0xFF165273),
+                        fontSize = 14.sp,
+                        textDecoration = TextDecoration.Underline,
+                        modifier = Modifier.padding(0.dp))
+                }
             }
+
+            Row(modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp)) {
+                LazyRow(
+                    modifier = Modifier,
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                ) {
+                    items(products) { product ->
+                        ProductCard(product)
+                    }
+                }
+            }
+
         }
 
-        Spacer(modifier = Modifier.height(20.dp))
-
-        // 💡 Gợi ý cho bạn
-        Text(text = "Gợi ý cho bạn", style = MaterialTheme.typography.titleMedium)
-        LazyRow(modifier = Modifier.fillMaxWidth()) {
-            items(productList) { product ->
-                ProductItem(product = product)
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                ProductGrid()
             }
         }
     }
-}
-
-@Composable
-fun ProductItem(product: Product) {
-    Column(modifier = Modifier.padding(8.dp)) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_launcher_foreground),
-            contentDescription = "Product Image",
-            modifier = Modifier.size(100.dp),
-            contentScale = ContentScale.Crop
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(text = product.name, style = MaterialTheme.typography.bodyLarge)
-        Text(text = "${product.price}đ", color = Color.Red, style = MaterialTheme.typography.bodyMedium)
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewHomeScreen() {
-    HomeScreen()
 }
