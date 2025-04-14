@@ -22,12 +22,15 @@ import androidx.navigation.NavController
 fun SignUpScreen(
     navController: NavController,
     authViewModel: AuthViewModel = viewModel(),
-    onSignUpClick: (String, String) -> Unit,
+    onSignUpClick: (String, String, String, String, String) -> Unit,
     onLoginClick: () -> Unit
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
+    var fullName by remember { mutableStateOf("") }  // fullName input
+    var phone by remember { mutableStateOf("") }     // phone input
+    var address by remember { mutableStateOf("") }   // address input
 
     // Collect LiveData state
     val errorMessage by authViewModel.errorMessage.observeAsState("")
@@ -41,6 +44,7 @@ fun SignUpScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
+        // Email input
         TextField(
             value = email,
             onValueChange = { email = it },
@@ -51,8 +55,8 @@ fun SignUpScreen(
             )
         )
 
+        // Password input
         Spacer(modifier = Modifier.height(16.dp))
-
         TextField(
             value = password,
             onValueChange = { password = it },
@@ -64,8 +68,8 @@ fun SignUpScreen(
             )
         )
 
+        // Confirm Password input
         Spacer(modifier = Modifier.height(16.dp))
-
         TextField(
             value = confirmPassword,
             onValueChange = { confirmPassword = it },
@@ -77,16 +81,45 @@ fun SignUpScreen(
             )
         )
 
+        // Full Name input
+        Spacer(modifier = Modifier.height(16.dp))
+        TextField(
+            value = fullName,
+            onValueChange = { fullName = it },
+            label = { Text("Họ và tên") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        // Phone input
+        Spacer(modifier = Modifier.height(16.dp))
+        TextField(
+            value = phone,
+            onValueChange = { phone = it },
+            label = { Text("Số điện thoại") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        // Address input
+        Spacer(modifier = Modifier.height(16.dp))
+        TextField(
+            value = address,
+            onValueChange = { address = it },
+            label = { Text("Địa chỉ") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
         Spacer(modifier = Modifier.height(32.dp))
 
+        // Show error message if needed
         if (errorMessage.isNotEmpty()) {
             Text(text = errorMessage, color = MaterialTheme.colorScheme.error)
             Spacer(modifier = Modifier.height(8.dp))
         }
 
+        // Sign up button
         Button(
             onClick = {
-                if (email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                if (email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || fullName.isEmpty() || phone.isEmpty() || address.isEmpty()) {
                     authViewModel.setErrorMessage("Vui lòng nhập đầy đủ!")
                 } else if (password != confirmPassword) {
                     authViewModel.setErrorMessage("Mật khẩu không khớp!")
@@ -95,10 +128,7 @@ fun SignUpScreen(
                 } else if (password.length < 6 || !password[0].isUpperCase()) {
                     authViewModel.setErrorMessage("Mật khẩu phải có ít nhất 6 kí tự và chữ cái đầu phải viết hoa!")
                 } else {
-                    authViewModel.register(email, password) {
-                        // Quay lại màn hình đăng nhập sau khi đăng ký thành công
-                        navController.popBackStack()
-                    }
+                    onSignUpClick(email, password, fullName, phone, address)  // Pass all parameters
                 }
             },
             modifier = Modifier.fillMaxWidth()
@@ -108,6 +138,7 @@ fun SignUpScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Go to login screen if already have an account
         Text(
             text = "Đã có tài khoản? Đăng nhập",
             color = MaterialTheme.colorScheme.primary,

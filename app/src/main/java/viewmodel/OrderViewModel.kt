@@ -11,12 +11,12 @@ class OrderViewModel : ViewModel() {
     val orderList = MutableLiveData<List<Order>>()
     val errorMessage = MutableLiveData<String>()
 
-    // Thêm đơn hàng vào Realtime Database
-    fun addOrder(order: Order) {
-        orderRepository.addOrder(order)
+    // ✅ Thêm đơn hàng vào Realtime Database và xử lý kết quả
+    fun addOrder(order: Order, onResult: (Boolean, String?) -> Unit) {
+        orderRepository.addOrder(order, onResult)
     }
 
-    // Lấy tất cả đơn hàng của người dùng
+    // ✅ Lấy tất cả đơn hàng của người dùng
     fun getOrdersByUser(userID: String) {
         orderRepository.getOrdersByUser(userID) { orders ->
             if (orders.isNotEmpty()) {
@@ -27,7 +27,7 @@ class OrderViewModel : ViewModel() {
         }
     }
 
-    // Cập nhật trạng thái đơn hàng
+    // ✅ Cập nhật trạng thái đơn hàng
     fun updateOrderStatus(orderID: String, status: String) {
         orderRepository.updateOrderStatus(orderID, status)
     }

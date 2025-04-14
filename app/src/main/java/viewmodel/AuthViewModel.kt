@@ -7,17 +7,16 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import model.data.Product
+import model.data.User  // Import User từ model.data
 
 class AuthViewModel : ViewModel() {
     private val authRepository = AuthRepository()
     private val auth = FirebaseAuth.getInstance()
     val productList = MutableLiveData<List<Product>>()
-    // Expose error messages and success status as LiveData
     val errorMessage: MutableLiveData<String> = MutableLiveData()
     val successMessage: MutableLiveData<String> = MutableLiveData()
     private val database: DatabaseReference = FirebaseDatabase.getInstance().reference
 
-    // Đăng nhập người dùng
     fun login(email: String, password: String, onSuccess: () -> Unit) {
         authRepository.login(
             email,
@@ -27,10 +26,10 @@ class AuthViewModel : ViewModel() {
                 user?.getIdToken(true)?.addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         successMessage.value = "Đăng nhập thành công"
-                        onSuccess()  // Điều hướng sau khi đăng nhập thành công
+                        onSuccess()
                     }
                 }
-                errorMessage.value = ""  // Clear any previous error
+                errorMessage.value = ""
             },
             onFailure = { error ->
                 errorMessage.value = error
@@ -38,33 +37,50 @@ class AuthViewModel : ViewModel() {
         )
     }
 
-    private fun onSuccess() {
-        TODO("Not yet implemented")
-    }
-
-    // Đăng ký người dùng
-    fun register(email: String, password: String, onSuccess: () -> Unit) {
+    fun register(
+        email: String,
+        password: String,
+        fullName: String,
+        phone: String,
+        address: String,
+        onSuccess: () -> Unit
+    ) {
         authRepository.register(
             email,
             password,
             onSuccess = {
-                // Đăng ký thành công
-                successMessage.value = "Đăng ký thành công"
-                errorMessage.value = ""  // Clear any previous error
-                onSuccess() // Điều hướng về trang đăng nhập sau khi đăng ký thành công
+                val uid = auth.currentUser?.uid
+                if (uid != null) {
+                    val user = User(  // Tạo đối tượng User từ model.data
+                        uid = uid,
+                        email = email,
+                        fullName = fullName,
+                        phone = phone,
+                        address = address
+                    )
+                    database.child("users").child(uid).setValue(user)
+                        .addOnSuccessListener {
+                            successMessage.value = "Đăng ký và lưu thông tin thành công"
+                            errorMessage.value = ""
+                            onSuccess()
+                        }
+                        .addOnFailureListener {
+                            errorMessage.value = "Đăng ký thành công nhưng lưu thông tin thất bại"
+                        }
+                } else {
+                    errorMessage.value = "Không lấy được UID người dùng"
+                }
             },
             onFailure = { error ->
-                // Cập nhật thông báo lỗi
                 errorMessage.value = error
             }
         )
     }
 
-    // Phương thức để đặt thông báo lỗi thủ công (tuỳ chọn)
     fun setErrorMessage(message: String) {
         errorMessage.value = message
     }
-    // Hàm đọc dữ liệu từ Firebase
+
     fun fetchProducts() {
         database.child("products").get().addOnSuccessListener { snapshot ->
             if (snapshot.exists()) {
@@ -72,7 +88,7 @@ class AuthViewModel : ViewModel() {
                     dataSnapshot.getValue(Product::class.java)
                 }.filterNotNull()
 
-                productList.value = products // Đưa dữ liệu vào LiveData
+                productList.value = products
             } else {
                 errorMessage.value = "No products found"
             }
@@ -80,6 +96,9 @@ class AuthViewModel : ViewModel() {
             errorMessage.value = "Failed to fetch products: ${it.message}"
         }
     }
+
+    // Sửa lại phương thức này
+    fun saveUserInfo(userId: String, user: User) {
+        database.child("users").child(userId).setValue(user)
+    }
 }
-
-

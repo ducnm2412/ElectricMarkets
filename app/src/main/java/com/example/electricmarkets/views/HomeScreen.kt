@@ -5,12 +5,15 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
@@ -24,10 +27,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.electricmarkets.R
+import viewmodel.ProductViewModel
 
 @Composable
-fun HomeScreen(){
+fun HomeScreen() {
+    val productViewModel: ProductViewModel = viewModel()
     val products = List(7) {
         Product(
             name = "Tủ lạnh SamSum inverter",
@@ -36,14 +42,15 @@ fun HomeScreen(){
             imageRes = R.drawable.tulanh
         )
     }
+
     Column(
         modifier = Modifier.fillMaxSize().background(color = Color.White)
     ) {
-
+        // Header và các Menu
         HeadderScreen()
-
         MenuMiniSCreen()
 
+        // Quảng cáo
         Card(onClick = {},
             modifier = Modifier,
             colors = CardDefaults.cardColors(
@@ -55,6 +62,7 @@ fun HomeScreen(){
                 contentScale = ContentScale.FillWidth)
         }
 
+        // Danh mục sản phẩm giảm giá
         Column(
             modifier = Modifier.fillMaxWidth().background(color = Color(0xFF9DDEFB))
         ) {
@@ -81,27 +89,71 @@ fun HomeScreen(){
                 }
             }
 
+            // Hiển thị sản phẩm
             Row(modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp)) {
                 LazyRow(
                     modifier = Modifier,
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
                 ) {
                     items(products) { product ->
-                        ProductCard(product)
+                        ProductCard(product, onBuyClick = {
+                            productViewModel.addDefaultProducts() // Thêm sản phẩm vào Realtime Database khi mua
+                        })
                     }
                 }
             }
-
         }
 
-        Column(
-            modifier = Modifier.fillMaxWidth()
-        ) {
+        // Phần sản phẩm khác (grid, v.v.)
+        Column(modifier = Modifier.fillMaxWidth()) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 ProductGrid()
+            }
+        }
+    }
+}
+
+@Composable
+fun ProductCard(product: Product, onBuyClick: () -> Unit) {
+    Card(
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(10.dp)),
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp)
+    ) {
+        Column(modifier = Modifier.padding(8.dp)) {
+            Image(
+                painter = painterResource(id = product.imageRes),
+                contentDescription = product.name,
+                modifier = Modifier.fillMaxWidth(),
+                contentScale = ContentScale.Crop
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = product.name,
+                fontSize = 16.sp,
+                color = Color.Black
+            )
+            Text(
+                text = "Giá: ${product.price}",
+                fontSize = 14.sp,
+                color = Color.Gray
+            )
+            Text(
+                text = "Giá cũ: ${product.oldPrice}",
+                fontSize = 12.sp,
+                color = Color.Gray,
+                textDecoration = TextDecoration.LineThrough
+            )
+            Button(
+                onClick = onBuyClick,
+                modifier = Modifier.padding(top = 8.dp)
+            ) {
+                Text(text = "Mua")
             }
         }
     }

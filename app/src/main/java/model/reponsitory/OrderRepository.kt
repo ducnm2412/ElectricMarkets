@@ -9,16 +9,20 @@ class OrderRepository {
     private val orderRef = database.getReference("orders")
 
     // Thêm đơn hàng vào Realtime Database
-    fun addOrder(order: Order) {
+    fun addOrder(order: Order, onResult: (Boolean, String?) -> Unit) {
         val key = orderRef.push().key
         if (key != null) {
             orderRef.child(key).setValue(order)
                 .addOnSuccessListener {
-                    println(" Order added successfully!")
+                    println("Order added successfully!")
+                    onResult(true, key)
                 }
                 .addOnFailureListener { e ->
-                    println(" Error adding order: $e")
+                    println("Error adding order: $e")
+                    onResult(false, null)
                 }
+        } else {
+            onResult(false, null)
         }
     }
 

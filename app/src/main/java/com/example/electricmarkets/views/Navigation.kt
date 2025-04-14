@@ -26,8 +26,8 @@ fun Navigation() {
             SignUpScreen(
                 authViewModel = authViewModel,  // Passing the authViewModel
                 navController = navController,  // Passing the navController
-                onSignUpClick = { email, password ->
-                    authViewModel.register(email, password) {
+                onSignUpClick = { email, password, fullName, phone, address ->
+                    authViewModel.register(email, password, fullName, phone, address) {
                         navController.popBackStack()  // Go back to the login screen after successful registration
                     }
                 },
@@ -42,3 +42,4 @@ fun Navigation() {
         }
     }
 }
+

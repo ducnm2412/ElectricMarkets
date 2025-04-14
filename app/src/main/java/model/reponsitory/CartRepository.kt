@@ -1,59 +1,41 @@
-package model.reponsitory
+package model.repository
 
-
-import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.FirebaseFirestore
-import model.data.Cart
+import com.google.firebase.database.FirebaseDatabase
 import model.data.CartItem
 
 class CartRepository {
 
-    private val firestore = FirebaseFirestore.getInstance()
+    private val db = FirebaseDatabase.getInstance().getReference("carts")
 
-    // Thêm sản phẩm vào giỏ hàng của người dùng
-    fun addProductToCart(userUID: String, cartItem: CartItem) {
-        val cartRef = firestore.collection("carts").document(userUID)
-
-        // Thêm sản phẩm vào giỏ hàng
-        cartRef.update("items", FieldValue.arrayUnion(cartItem))
+    // Thêm hoặc cập nhật sản phẩm vào giỏ hàng
+    fun addProductToCart(userId: String, productId: String, item: CartItem) {
+        db.child(userId).child(productId).setValue(item)
             .addOnSuccessListener {
-                println("Product added to cart successfully!")
+                println("✅ Added to cart")
             }
-            .addOnFailureListener { e ->
-                println("Error adding product to cart: $e")
+            .addOnFailureListener {
+                println("❌ Failed to add to cart: ${it.message}")
             }
     }
 
-    // Lấy giỏ hàng của người dùng
-    fun getCart(userUID: String, callback: (Cart?) -> Unit) {
-        val cartRef = firestore.collection("carts").document(userUID)
-
-        cartRef.get()
-            .addOnSuccessListener { document ->
-                if (document.exists()) {
-                    val cart = document.toObject(Cart::class.java)
-                    callback(cart)
-                } else {
-                    callback(null)
+    // Lấy toàn bộ giỏ hàng
+    fun getCart(userId: String, onResult: (List<CartItem>) -> Unit) {
+        db.child(userId).get()
+            .addOnSuccessListener { snapshot ->
+                val list = snapshot.children.mapNotNull {
+                    val productId = it.key ?: return@mapNotNull null
+                    val item = it.getValue(CartItem::class.java)
+                    item?.copy(productID = productId)
                 }
+                onResult(list)
             }
-            .addOnFailureListener { e ->
-                println("Error getting cart: $e")
-                callback(null)
+            .addOnFailureListener {
+                onResult(emptyList())
             }
     }
 
-    // Cập nhật giỏ hàng của người dùng
-    fun updateCart(userUID: String, cart: Cart) {
-        val cartRef = firestore.collection("carts").document(userUID)
-
-        // Cập nhật giỏ hàng trong Firestore
-        cartRef.set(cart)
-            .addOnSuccessListener {
-                println("Cart updated successfully!")
-            }
-            .addOnFailureListener { e ->
-                println("Error updating cart: $e")
-            }
+    // Xóa sản phẩm khỏi giỏ
+    fun removeProduct(userId: String, productId: String) {
+        db.child(userId).child(productId).removeValue()
     }
 }

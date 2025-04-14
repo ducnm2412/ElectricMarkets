@@ -1,36 +1,29 @@
 package viewmodel
 
-
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import model.data.Cart
 import model.data.CartItem
-import model.reponsitory.CartRepository
+import model.repository.CartRepository
 
 class CartViewModel : ViewModel() {
 
-    private val cartRepository = CartRepository()
-    val cart = MutableLiveData<Cart?>()
+    private val repo = CartRepository()
+    val cartItems = MutableLiveData<List<CartItem>>()
     val errorMessage = MutableLiveData<String>()
 
-    // Thêm sản phẩm vào giỏ hàng
-    fun addProductToCart(userUID: String, cartItem: CartItem) {
-        cartRepository.addProductToCart(userUID, cartItem)
-    }
-
-    // Lấy giỏ hàng của người dùng
-    fun getCart(userUID: String) {
-        cartRepository.getCart(userUID) { fetchedCart ->
-            if (fetchedCart != null) {
-                cart.value = fetchedCart
-            } else {
-                errorMessage.value = "No cart found"
-            }
+    fun loadCart(userId: String) {
+        repo.getCart(userId) { list ->
+            cartItems.value = list
         }
     }
 
-    // Cập nhật giỏ hàng
-    fun updateCart(userUID: String, cart: Cart) {
-        cartRepository.updateCart(userUID, cart)
+    fun addToCart(userId: String, productId: String, item: CartItem) {
+        repo.addProductToCart(userId, productId, item)
+        loadCart(userId) // reload lại nếu cần
+    }
+
+    fun removeItem(userId: String, productId: String) {
+        repo.removeProduct(userId, productId)
+        loadCart(userId)
     }
 }
