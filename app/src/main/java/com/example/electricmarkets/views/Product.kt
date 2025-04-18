@@ -1,13 +1,8 @@
-package com.example.electricmarkets.views
-
+package com.example.electricmarkets
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -23,49 +18,12 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.electricmarkets.R
 
 @Composable
-fun ProductGrid() {
-    val products = List(7) {
-        Product(
-            name = "Tủ lạnh SamSum inverter",
-            price = "19.790.000",
-            oldPrice = "22.490.000",
-            imageRes = R.drawable.tulanh
-        )
-    }
-
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(3),
-        modifier = Modifier
-            .fillMaxSize(),
-        contentPadding = PaddingValues(8.dp),
-        horizontalArrangement = Arrangement.spacedBy(10.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
-    ) {
-        item(span = { GridItemSpan(maxLineSpan) }) {
-            Text(
-                "GỢI Ý CHO BẠN",
-                fontSize = 16.sp,
-                color = Color(0xFF165273),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                textAlign = TextAlign.Start
-            )
-        }
-
-        items(products) { product ->
-            ProductCard(product)
-        }
-    }
-}
-@Composable
-fun ProductCard(product: Product,modifier: Modifier = Modifier) {
+fun ProductCard(product: Product) {
     Card(
         modifier = Modifier
-            .width(145.dp)
+            .width(160.dp)
             .aspectRatio(0.7f)
             .border(
                 width = 2.dp,
@@ -124,7 +82,7 @@ fun ProductCard(product: Product,modifier: Modifier = Modifier) {
                     Text(
                         text = product.oldPrice,
                         fontSize = 12.sp,
-                        color = Color.Gray,
+                        color = Color.Red,
                         textDecoration = TextDecoration.LineThrough
                     )
                 }
@@ -146,9 +104,5 @@ fun ProductCard(product: Product,modifier: Modifier = Modifier) {
     }
 }
 
-data class Product(
-    val name: String,
-    val price: String,
-    val oldPrice: String,
-    val imageRes: Int
-)
+
+
