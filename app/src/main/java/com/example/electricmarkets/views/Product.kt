@@ -103,6 +103,11 @@ fun ProductCard(product: Product) {
         }
     }
 }
-
+data class Product(
+    val name: String,
+    val price: String,
+    val oldPrice: String,
+    val imageRes: Int
+)
 
 
