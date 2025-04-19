@@ -107,7 +107,8 @@ data class Product(
     val name: String,
     val price: String,
     val oldPrice: String,
-    val imageRes: Int
+    val imageRes: Int,
+    val quantity: Int?
 )
 
 

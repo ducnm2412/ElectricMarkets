@@ -32,7 +32,8 @@ fun MenuScreen(){
             name = "Tủ lạnh SamSum inverter",
             price = "19.790.000",
             oldPrice = "22.490.000",
-            imageRes = R.drawable.tulanh
+            imageRes = R.drawable.tulanh,
+            quantity = null
         )
     }
 
