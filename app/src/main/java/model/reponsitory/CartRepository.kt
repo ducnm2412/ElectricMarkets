@@ -2,12 +2,11 @@ package model.repository
 
 import com.google.firebase.database.FirebaseDatabase
 import model.data.CartItem
-
 class CartRepository {
 
     private val db = FirebaseDatabase.getInstance().getReference("carts")
 
-    // Thêm hoặc cập nhật sản phẩm vào giỏ hàng
+    // Thêm sản phẩm vào giỏ hàng
     fun addProductToCart(userId: String, productId: String, item: CartItem) {
         db.child(userId).child(productId).setValue(item)
             .addOnSuccessListener {
@@ -18,7 +17,7 @@ class CartRepository {
             }
     }
 
-    // Lấy toàn bộ giỏ hàng
+    // Lấy tất cả sản phẩm trong giỏ hàng
     fun getCart(userId: String, onResult: (List<CartItem>) -> Unit) {
         db.child(userId).get()
             .addOnSuccessListener { snapshot ->
@@ -34,8 +33,13 @@ class CartRepository {
             }
     }
 
-    // Xóa sản phẩm khỏi giỏ
+    // Xóa sản phẩm khỏi giỏ hàng
     fun removeProduct(userId: String, productId: String) {
         db.child(userId).child(productId).removeValue()
+    }
+
+    // Xóa toàn bộ giỏ hàng (hoặc có thể xóa khi đã thanh toán)
+    fun clearCart(userId: String) {
+        db.child(userId).removeValue()
     }
 }

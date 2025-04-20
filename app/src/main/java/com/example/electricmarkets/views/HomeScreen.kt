@@ -20,6 +20,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,22 +33,23 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.electricmarkets.Product
 import com.example.electricmarkets.ProductCard
 import com.example.electricmarkets.R
 import viewmodel.ProductViewModel
+import androidx.compose.runtime.livedata.observeAsState
+
+
 
 @Composable
-fun HomeScreen(){
-    val products = List(50) {
-        Product(
-            name = "Tủ lạnh SamSum inverter",
-            price = "19.790.000",
-            oldPrice = "22.490.000",
-            imageRes = R.drawable.tulanh,
-            quantity = null
-        )
+fun HomeScreen() {
+    val productViewModel: ProductViewModel = viewModel()  // Lấy ViewModel
+    val products by productViewModel.productList.observeAsState(emptyList())
+
+    // Gọi getProducts() để lấy dữ liệu từ Firebase khi màn hình được hiển thị
+    LaunchedEffect(true) {
+        productViewModel.getProducts()
     }
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -57,9 +60,8 @@ fun HomeScreen(){
         LazyColumn(
             modifier = Modifier.fillMaxWidth().weight(1f)
         ) {
-            item{
-
-                //quảng cáo
+            item {
+                // Quảng cáo
                 Card(
                     onClick = {},
                     modifier = Modifier
@@ -77,8 +79,8 @@ fun HomeScreen(){
                 }
             }
 
-            item{
-                //Sản phẩm giảm giá
+            item {
+                // Sản phẩm giảm giá
                 Column(
                     modifier = Modifier.fillMaxWidth()
                         .background(color = Color(0xFF9DDEFB))
@@ -116,9 +118,9 @@ fun HomeScreen(){
                             }
                         }
                     }
-
                 }
             }
+
             item {
                 Text(
                     "GỢI Ý CHO BẠN",
@@ -154,3 +156,5 @@ fun HomeScreen(){
         FooterScreen()
     }
 }
+
+

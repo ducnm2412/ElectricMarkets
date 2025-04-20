@@ -9,7 +9,7 @@ import model.repository.ProductRepository
 class ProductViewModel : ViewModel() {
 
     private val productRepository = ProductRepository()
-    val productList = MutableLiveData<List<Product>>()
+    val productList: MutableLiveData<List<Product>> = MutableLiveData()
     val errorMessage = MutableLiveData<String>()
     private val cartRepository = CartRepository()
     val allProducts = MutableLiveData<List<Product>>() // toàn bộ

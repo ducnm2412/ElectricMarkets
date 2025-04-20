@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.electricmarkets.Product
 import com.example.electricmarkets.R
+import model.data.Product
 
 @Composable
 fun CartProductCard(product: Product){

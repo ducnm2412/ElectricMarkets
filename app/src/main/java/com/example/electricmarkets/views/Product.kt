@@ -18,6 +18,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import model.data.Product
 
 @Composable
 fun ProductCard(product: Product) {
@@ -43,7 +44,7 @@ fun ProductCard(product: Product) {
                 colors = CardDefaults.cardColors(containerColor = Color.White)
             ) {
                 Image(
-                    painter = painterResource(id = product.imageRes),
+                    painter = painterResource(id = product.image),
                     contentDescription = null,
                     modifier = Modifier
                         .height(80.dp)
@@ -74,17 +75,19 @@ fun ProductCard(product: Product) {
             ) {
                 Column {
                     Text(
-                        text = product.price,
+                        text = "$${product.price}",  // Hiển thị giá gốc
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.Black
                     )
-                    Text(
-                        text = product.oldPrice,
-                        fontSize = 12.sp,
-                        color = Color.Red,
-                        textDecoration = TextDecoration.LineThrough
-                    )
+                    if (product.discountedPrice < product.price) {
+                        Text(
+                            text = "$${product.discountedPrice}",  // Hiển thị giá sau giảm giá
+                            fontSize = 12.sp,
+                            color = Color.Red,
+                            textDecoration = TextDecoration.LineThrough
+                        )
+                    }
                 }
                 Spacer(modifier = Modifier.width(4.dp))
                 Button(
@@ -103,12 +106,5 @@ fun ProductCard(product: Product) {
         }
     }
 }
-data class Product(
-    val name: String,
-    val price: String,
-    val oldPrice: String,
-    val imageRes: Int,
-    val quantity: Int?
-)
 
 
