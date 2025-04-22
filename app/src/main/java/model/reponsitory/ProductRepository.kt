@@ -12,16 +12,16 @@ class ProductRepository {
     // Thêm 10 sản phẩm vào Realtime Database
     fun addDefaultProducts() {
         val products = listOf(
-            Product("Máy lạnh Panasonic Inverter WIFI 1.0 HP", "Tiết kiệm điện, làm lạnh nhanh", 12900000.0, 12290000.0, "Máy lạnh", 5, R.drawable.panasonic_1hp),
-            Product("Naga Inverter 1 HP", "Thiết kế nhỏ gọn, vận hành êm", 6680000.0, 5480000.0, "Máy lạnh", 10, R.drawable.naga_1hp),
-            Product("TCL Inverter 1.5 HP", "Công nghệ làm lạnh sâu", 7990000.0, 5990000.0, "Máy lạnh", 8, R.drawable.tcl_15hp),
-            Product("Electrolux ECI-28D", "Tai nghe không dây chống ồn", 3290000.0, 2540000.0, "Phụ kiện", 20, R.drawable.electrolux_eci28d),
-            Product("Tủ lạnh Samsung Inverter", "Tiết kiệm điện, dung tích lớn", 22490000.0, 19790000.0, "Tủ lạnh", 3, R.drawable.tu_lanh_samsung),
-            Product("Máy giặt Panasonic Inverter", "Công nghệ giặt tiết kiệm nước", 15149000.0, 12790000.0, "Máy giặt", 4, R.drawable.may_giat_panasonic),
-            Product("Máy lọc nước RO nóng lạnh", "Lọc 9 lõi, nước uống trực tiếp", 9120000.0, 6590000.0, "Máy lọc nước", 7, R.drawable.loc_nuoc_ro),
-            Product("Thăng nhít Robot", "Xe máy điện trẻ em", 1990000.0, 1590000.0, "Khác", 12, R.drawable.xe_dap_robot),
-            Product("Tivi LG 55 inch 4K", "Hình ảnh sắc nét, hệ điều hành WebOS", 15000000.0, 13500000.0, "Tivi", 6, R.drawable.tivi_lg_55),
-            Product("Máy lạnh Casper Inverter 1 HP", "Giá rẻ, làm lạnh nhanh", 7490000.0, 5490000.0, "Máy lạnh", 9, R.drawable.casper_1hp)
+            Product(id = "1", name = "Máy lạnh Panasonic Inverter WIFI 1.0 HP", description = "Tiết kiệm điện, làm lạnh nhanh", price = 12900000.0, discountedPrice = 12290000.0, category = "Máy lạnh", stock = 5, image = R.drawable.panasonic_1hp),
+            Product(id = "2", name = "Naga Inverter 1 HP", description = "Thiết kế nhỏ gọn, vận hành êm", price = 6680000.0, discountedPrice = 5480000.0, category = "Máy lạnh", stock = 10, image = R.drawable.naga_1hp),
+            Product(id = "3", name = "TCL Inverter 1.5 HP", description = "Công nghệ làm lạnh sâu", price = 7990000.0, discountedPrice = 5990000.0, category = "Máy lạnh", stock = 8, image = R.drawable.tcl_15hp),
+            Product(id = "4", name = "Electrolux ECI-28D", description = "Tai nghe không dây chống ồn", price = 3290000.0, discountedPrice = 2540000.0, category = "Phụ kiện", stock = 20, image = R.drawable.electrolux_eci28d),
+            Product(id = "5", name = "Tủ lạnh Samsung Inverter", description = "Tiết kiệm điện, dung tích lớn", price = 22490000.0, discountedPrice = 19790000.0, category = "Tủ lạnh", stock = 3, image = R.drawable.tu_lanh_samsung),
+            Product(id = "6", name = "Máy giặt Panasonic Inverter", description = "Công nghệ giặt tiết kiệm nước", price = 15149000.0, discountedPrice = 12790000.0, category = "Máy giặt", stock = 4, image = R.drawable.may_giat_panasonic),
+            Product(id = "7", name = "Máy lọc nước RO nóng lạnh", description = "Lọc 9 lõi, nước uống trực tiếp", price = 9120000.0, discountedPrice = 6590000.0, category = "Máy lọc nước", stock = 7, image = R.drawable.loc_nuoc_ro),
+            Product(id = "8", name = "Thăng nhít Robot", description = "Xe máy điện trẻ em", price = 1990000.0, discountedPrice = 1590000.0, category = "Khác", stock = 12, image = R.drawable.xe_dap_robot),
+            Product(id = "9", name = "Tivi LG 55 inch 4K", description = "Hình ảnh sắc nét, hệ điều hành WebOS", price = 15000000.0, discountedPrice = 13500000.0, category = "Tivi", stock = 6, image = R.drawable.tivi_lg_55),
+            Product(id = "10", name = "Máy lạnh Casper Inverter 1 HP", description = "Giá rẻ, làm lạnh nhanh", price = 7490000.0, discountedPrice = 5490000.0, category = "Máy lạnh", stock = 9, image = R.drawable.casper_1hp)
         )
 
         products.forEach { product ->
@@ -35,11 +35,13 @@ class ProductRepository {
     }
 
 
-    // Lấy danh sách sản phẩm từ Realtime Database
     fun getProducts(callback: (List<Product>) -> Unit) {
         productRef.get()
             .addOnSuccessListener { snapshot ->
-                val products = snapshot.children.mapNotNull { it.getValue(Product::class.java) }
+                val products = snapshot.children.mapNotNull {
+                    val product = it.getValue(Product::class.java)
+                    product?.copy(id = it.key ?: "") // Thêm id cho mỗi sản phẩm
+                }
                 callback(products)
             }
             .addOnFailureListener { e ->
@@ -47,5 +49,6 @@ class ProductRepository {
                 callback(emptyList())
             }
     }
+
 
 }

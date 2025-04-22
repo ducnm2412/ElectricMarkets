@@ -18,10 +18,16 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.electricmarkets.viewmodel.AuthViewModel
+import com.google.firebase.auth.FirebaseAuth
+import model.data.CartItem
 import model.data.Product
+import viewmodel.CartViewModel
 
 @Composable
-fun ProductCard(product: Product) {
+fun ProductCard(product: Product, cartViewModel: CartViewModel, authViewModel: AuthViewModel) {
+    val isLoggedIn = FirebaseAuth.getInstance().currentUser != null  // Kiểm tra trạng thái đăng nhập
+
     Card(
         modifier = Modifier
             .width(160.dp)
@@ -75,14 +81,14 @@ fun ProductCard(product: Product) {
             ) {
                 Column {
                     Text(
-                        text = "$${product.price}",  // Hiển thị giá gốc
+                        text = "$${product.price}",
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.Black
                     )
                     if (product.discountedPrice < product.price) {
                         Text(
-                            text = "$${product.discountedPrice}",  // Hiển thị giá sau giảm giá
+                            text = "$${product.discountedPrice}",
                             fontSize = 12.sp,
                             color = Color.Red,
                             textDecoration = TextDecoration.LineThrough
@@ -90,8 +96,29 @@ fun ProductCard(product: Product) {
                     }
                 }
                 Spacer(modifier = Modifier.width(4.dp))
+
+                // Nút Mua
                 Button(
-                    onClick = {},
+                    onClick = {
+                        if (isLoggedIn) {  // Nếu người dùng đã đăng nhập
+                            val cartItem = CartItem(
+                                productID = product.id,
+                                productName = product.name,
+                                quantity = 1,
+                                price = product.discountedPrice,
+                                imageRes = product.image
+                            )
+                            // Lưu thông tin sản phẩm vào giỏ hàng
+                            cartViewModel.addToCart(
+                                userId = FirebaseAuth.getInstance().currentUser?.uid ?: "",
+                                productId = product.id,
+                                item = cartItem
+                            )
+                        } else {
+                            // Nếu người dùng chưa đăng nhập, yêu cầu đăng nhập
+                            println("Vui lòng đăng nhập trước khi thêm sản phẩm vào giỏ hàng.")
+                        }
+                    },
                     modifier = Modifier.height(28.dp),
                     shape = RoundedCornerShape(6.dp),
                     colors = ButtonDefaults.buttonColors(
@@ -106,5 +133,4 @@ fun ProductCard(product: Product) {
         }
     }
 }
-
 

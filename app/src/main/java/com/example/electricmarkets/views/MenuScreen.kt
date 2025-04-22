@@ -20,22 +20,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.electricmarkets.Product
 import com.example.electricmarkets.ProductCard
 import com.example.electricmarkets.R
+import model.data.Product
 
 @Composable
 fun MenuScreen(){
 
-    val products = List(100) {
-        Product(
-            name = "Tủ lạnh SamSum inverter",
-            price = "19.790.000",
-            oldPrice = "22.490.000",
-            imageRes = R.drawable.tulanh,
-            quantity = null
-        )
-    }
+
 
     val menuMinis = List(12) {
         MenuMini(

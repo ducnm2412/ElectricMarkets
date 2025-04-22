@@ -34,14 +34,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.electricmarkets.Product
 import com.example.electricmarkets.R
+import com.google.firebase.auth.FirebaseAuth
+import model.data.CartItem
 import model.data.Product
+import viewmodel.CartViewModel
 
 @Composable
-fun CartProductCard(product: Product){
-    Card(modifier = Modifier.fillMaxWidth()
-        .padding(bottom = 16.dp),
+fun CartProductCard(cartItem: CartItem,cartViewModel: CartViewModel) {
+    Card(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.White
         )) {
@@ -53,14 +54,15 @@ fun CartProductCard(product: Product){
             verticalAlignment = Alignment.CenterVertically
         ) {
             Checkbox(
-                checked = false,
+                checked = false, // Có thể thay đổi khi xử lý tình huống chọn item
                 onCheckedChange = {}
             )
 
             Spacer(modifier = Modifier.width(8.dp))
 
+            // Hiển thị hình ảnh sản phẩm
             Image(
-                painter = painterResource(id = product.imageRes),
+                painter = painterResource(id = cartItem.imageRes), // Đây là hình ảnh của sản phẩm
                 contentDescription = null,
                 modifier = Modifier
                     .size(80.dp)
@@ -69,49 +71,37 @@ fun CartProductCard(product: Product){
 
             Spacer(modifier = Modifier.width(8.dp))
 
-            Column (modifier = Modifier.fillMaxWidth().weight(1f),
-            ) {
-                Text(text = product.name, fontWeight = FontWeight.Bold)
-                Text(text = "Giá: ${product.oldPrice}", color = Color.Gray, fontSize = 14.sp)
+            Column(modifier = Modifier.fillMaxWidth().weight(1f)) {
+                Text(text = cartItem.productName, fontWeight = FontWeight.Bold)
+                Text(text = "Giá: ${cartItem.price}", color = Color.Gray, fontSize = 14.sp)
 
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(text = "Số lượng: ", fontSize = 14.sp)
-                    IconButton (onClick = {  }) {
+                    IconButton(onClick = { /* Giảm số lượng */ }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Giảm")
                     }
-                    Text(text = "${product.quantity}", fontSize = 14.sp)
-                    IconButton(onClick = {  }) {
+                    Text(text = "${cartItem.quantity}", fontSize = 14.sp)
+                    IconButton(onClick = { /* Tăng số lượng */ }) {
                         Icon(Icons.Default.ArrowForward, contentDescription = "Tăng")
                     }
                 }
 
                 Row(modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween) {
-                    Button (
-                        onClick = {},
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFFFF6B6B)
-                        )
+                    Button(
+                        onClick = {
+                            cartViewModel.removeItem(userId = FirebaseAuth.getInstance().currentUser?.uid ?: "", productId = cartItem.productID)
+                        },
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF6B6B))
                     ) {
                         Text("Xóa khỏi giỏ")
                     }
 
                     Spacer(modifier = Modifier.width(8.dp))
-
-                    Button(
-                        onClick = {},
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF9DDEFB)
-                        ),
-                        modifier = Modifier.padding(end = 8.dp)
-                    ) {
-                        Text("Mua")
-                    }
                 }
             }
         }
-
     }
 }

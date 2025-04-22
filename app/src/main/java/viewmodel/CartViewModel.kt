@@ -14,17 +14,17 @@
         val cartItems = MutableLiveData<List<CartItem>>()
         val errorMessage = MutableLiveData<String>()
 
+        // Thêm sản phẩm vào giỏ hàng
+        fun addToCart(userId: String, productId: String, item: CartItem) {
+            repo.addProductToCart(userId, productId, item)
+            loadCart(userId) // Reload lại giỏ hàng sau khi thêm sản phẩm
+        }
+
         // Lấy giỏ hàng
         fun loadCart(userId: String) {
             repo.getCart(userId) { list ->
                 cartItems.value = list
             }
-        }
-
-        // Thêm sản phẩm vào giỏ hàng
-        fun addToCart(userId: String, productId: String, item: CartItem) {
-            repo.addProductToCart(userId, productId, item)
-            loadCart(userId) // reload lại giỏ hàng nếu cần
         }
 
         // Xóa sản phẩm khỏi giỏ hàng

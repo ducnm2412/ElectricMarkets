@@ -14,7 +14,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,15 +28,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.electricmarkets.R
+import viewmodel.ProductViewModel
 
 @Composable
-fun HeadderScreen(){
-    Column(modifier = Modifier.background(color = Color(0xFF009AEC))
-    ) {
 
-        Box(modifier = Modifier.fillMaxWidth()
-            .padding(start = 32.dp, end = 32.dp, top = 48.dp, bottom = 16.dp),
-        ) {
+fun HeadderScreen(productViewModel: ProductViewModel) {
+    val searchKeyword = remember { mutableStateOf("") }  // Dùng để lưu từ khóa tìm kiếm
+
+    // Cập nhật sản phẩm khi người dùng nhập từ khóa tìm kiếm
+    LaunchedEffect(searchKeyword.value) {
+        productViewModel.searchProductsByName(searchKeyword.value)
+    }
+
+    Column(modifier = Modifier.background(color = Color(0xFF009AEC))) {
+
+        Box(modifier = Modifier.fillMaxWidth().padding(start = 32.dp, end = 32.dp, top = 48.dp, bottom = 16.dp)) {
             Text("Electric Markets",
                 color = Color(0xFFFBE025),
                 fontSize = 24.sp,
@@ -61,9 +71,13 @@ fun HeadderScreen(){
 
             Spacer(modifier = Modifier.width(8.dp))
 
-            Text("Tìm Kiếm ..............",
-                fontSize = 20.sp,
-                color = Color.LightGray)
+            // TextField cho việc nhập từ khóa tìm kiếm
+            TextField(
+                value = searchKeyword.value,
+                onValueChange = { searchKeyword.value = it },
+                label = { Text("Tìm kiếm sản phẩm...") },
+                modifier = Modifier.fillMaxWidth()
+            )
         }
     }
 }
