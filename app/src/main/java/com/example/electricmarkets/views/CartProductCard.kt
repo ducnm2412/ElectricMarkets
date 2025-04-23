@@ -80,11 +80,11 @@ fun CartProductCard(cartItem: CartItem,cartViewModel: CartViewModel) {
                 ) {
                     Text(text = "Số lượng: ", fontSize = 14.sp)
                     IconButton(onClick = { /* Giảm số lượng */ }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Giảm")
+                        Icon(painter = painterResource(id = R.drawable.tru), contentDescription = "Giảm")
                     }
                     Text(text = "${cartItem.quantity}", fontSize = 14.sp)
                     IconButton(onClick = { /* Tăng số lượng */ }) {
-                        Icon(Icons.Default.ArrowForward, contentDescription = "Tăng")
+                        Icon(painter = painterResource(id = R.drawable.add), contentDescription = "Tăng")
                     }
                 }
 

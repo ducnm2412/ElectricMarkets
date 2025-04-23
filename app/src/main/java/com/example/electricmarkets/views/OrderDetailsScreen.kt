@@ -26,10 +26,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.electricmarkets.R
 
 @Composable
-fun OrderDetailsScreen() {
+fun OrderDetailsScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -71,7 +72,6 @@ fun OrderDetailsScreen() {
                 Text(text = "Giá", modifier = Modifier.weight(0.4f))
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Divider()
             Spacer(modifier = Modifier.height(8.dp))
             // First product
             Row(modifier = Modifier.fillMaxWidth()) {
@@ -81,7 +81,6 @@ fun OrderDetailsScreen() {
                 Text(text = "6.490.000 đ", modifier = Modifier.weight(0.4f))
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Divider()
             Spacer(modifier = Modifier.height(8.dp))
             // Second product
             Row(modifier = Modifier.fillMaxWidth()) {

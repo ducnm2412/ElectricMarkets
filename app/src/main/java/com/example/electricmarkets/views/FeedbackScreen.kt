@@ -2,6 +2,7 @@ package com.example.electricmarkets.views
 
 import android.widget.RadioButton
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
@@ -36,10 +38,12 @@ import com.example.electricmarkets.R
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
+import androidx.navigation.NavController
 import viewmodel.ProductViewModel
 
 @Composable
-fun FeedBackScreen(){
+fun FeedBackScreen(navController: NavController){
     var gender by remember { mutableStateOf("Anh") }
     var feedback by remember { mutableStateOf("") }
     var name by remember { mutableStateOf("") }
@@ -49,25 +53,54 @@ fun FeedBackScreen(){
     Column(modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally) {
 
-        HeadderScreen(productViewModel = ProductViewModel())
+        //HeadderScreen(productViewModel = ProductViewModel(), navController = navController)
 
-        Box{
-            Row(modifier = Modifier.fillMaxWidth().padding(8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center){
-                Text("Góp ý/Liên hệ",
+        Column(modifier = Modifier.background(color = Color(0xFF009AEC))) {
+            Box(modifier = Modifier.fillMaxWidth()
+                .padding(start = 32.dp, end = 32.dp, top = 48.dp, bottom = 16.dp),
+            ) {
+                Text("Electric Markets",
+                    color = Color(0xFFFBE025),
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.Black
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth().padding(start = 56.dp, top = 8.dp)
                 )
+                Card (onClick = {
+                    navController.navigate("home")
+                },
+                    modifier = Modifier,
+                ) {
+                    Image(painter = painterResource(id = R.drawable.logoelectric),
+                        contentDescription = null,
+                        modifier = Modifier.size(56.dp))
+                }
             }
-
-            Image(painter = painterResource(id = R.drawable.back),
-                contentDescription = null,
-                modifier = Modifier.size(56.dp).padding(8.dp))
         }
 
+        Box(modifier = Modifier.fillMaxWidth()
+            .background(color = Color(0xFFDDDDDD)),
+        ) {
+            Text("Góp ý/Liên hệ",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth().padding(top = 16.dp, bottom = 16.dp)
+            )
+            Card(onClick = {
+                navController.navigate("profile")
+            },
+                modifier = Modifier.padding(start = 24.dp, top = 8.dp),
+            ) {
+                Image(painter = painterResource(id = R.drawable.back),
+                    contentDescription = null,
+                    modifier = Modifier.size(36.dp))
+            }
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
         Text("Chúng tôi xin hân hạnh được hỗ trợ quý khách")
+        Spacer(modifier = Modifier.height(8.dp))
 
         // TextField góp ý
         OutlinedTextField(

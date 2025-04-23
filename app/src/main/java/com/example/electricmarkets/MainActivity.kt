@@ -7,6 +7,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import com.example.electricmarkets.ui.theme.ElectricMarketsTheme
 import com.example.electricmarkets.navigation.Navigation
+import com.example.electricmarkets.views.CartScreen
+import com.example.electricmarkets.views.FeedBackScreen
 import com.example.electricmarkets.views.HomeScreen
 
 class MainActivity : ComponentActivity() {

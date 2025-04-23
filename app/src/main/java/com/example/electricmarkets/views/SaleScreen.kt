@@ -25,13 +25,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.electricmarkets.ProductCard
 import com.example.electricmarkets.R
 import com.example.electricmarkets.viewmodel.AuthViewModel
 import viewmodel.CartViewModel
 import viewmodel.ProductViewModel
 @Composable
-fun SaleScreen() {
+fun SaleScreen(navController: NavController) {
     val cartViewModel: CartViewModel = viewModel()
     val productViewModel: ProductViewModel = viewModel() // Lấy ViewModel
     val authViewModel: AuthViewModel = viewModel()
@@ -45,8 +46,8 @@ fun SaleScreen() {
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        HeadderScreen(productViewModel = productViewModel)
-        MenuMiniSCreen()
+        HeadderScreen(productViewModel = productViewModel, navController =  navController)
+        //MenuMiniSCreen()
 
         LazyColumn(modifier = Modifier.fillMaxWidth().weight(1f).background(color = Color(0xFF9DDEFB))) {
             item {
@@ -102,6 +103,6 @@ fun SaleScreen() {
             }
         }
 
-        FooterScreen()
+        FooterScreen(navController = navController)
     }
 }

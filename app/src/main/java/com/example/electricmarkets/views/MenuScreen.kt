@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.electricmarkets.ProductCard
 import com.example.electricmarkets.R
 import com.example.electricmarkets.viewmodel.AuthViewModel
@@ -26,7 +27,7 @@ import viewmodel.CartViewModel
 import viewmodel.ProductViewModel
 
 @Composable
-fun MenuScreen(){
+fun MenuScreen(navController: NavController){
 
     val productViewModel: ProductViewModel = viewModel()  // Lấy ViewModel
     val cartViewModel: CartViewModel = viewModel()
@@ -42,7 +43,7 @@ fun MenuScreen(){
 
     Column(modifier = Modifier.fillMaxSize().background(color = Color.White)) {
 
-        HeadderScreen(productViewModel = ProductViewModel())
+        HeadderScreen(productViewModel = ProductViewModel(),navController = navController)
 
         Row(modifier = Modifier.fillMaxWidth().weight(1f)) {
 
@@ -89,6 +90,6 @@ fun MenuScreen(){
                 }
             }
         }
-        FooterScreen()
+        FooterScreen(navController = navController)
     }
 }

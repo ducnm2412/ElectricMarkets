@@ -34,11 +34,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
+import androidx.navigation.NavController
 
 
 @Composable
-fun AboutScreen(){
+fun AboutScreen(navController: NavController){
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -52,7 +52,7 @@ fun AboutScreen(){
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Card(onClick = {},
+                Card(onClick = {navController.navigate("home")},
                     modifier = Modifier.padding(start = 24.dp)) {
                     Image(painter = painterResource(id = R.drawable.imageshop),
                         contentDescription =  null,
@@ -80,7 +80,7 @@ fun AboutScreen(){
                 modifier = Modifier.fillMaxWidth().padding(8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Card (onClick = {},
+                Card (onClick = {navController.navigate("profile")},
                     modifier = Modifier.padding(start = 16.dp)) {
                     Image(painter = painterResource(id = R.drawable.back),
                         contentDescription = null,
@@ -109,10 +109,4 @@ fun AboutScreen(){
                 modifier = Modifier.padding(16.dp))
         }
     }
-}
-
-@Preview(showSystemUi = true)
-@Composable
-fun Demo(){
-    AboutScreen()
 }

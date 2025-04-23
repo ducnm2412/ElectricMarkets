@@ -9,6 +9,13 @@ import com.example.electricmarkets.views.SignUpScreen
 import com.example.electricmarkets.views.HomeScreen
 import com.example.electricmarkets.viewmodel.AuthViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.electricmarkets.views.AboutScreen
+import com.example.electricmarkets.views.CartScreen
+import com.example.electricmarkets.views.FeedBackScreen
+import com.example.electricmarkets.views.MenuScreen
+import com.example.electricmarkets.views.ProfileScreen
+import com.example.electricmarkets.views.SaleScreen
+
 @Composable
 fun Navigation() {
     val navController = rememberNavController()
@@ -38,7 +45,31 @@ fun Navigation() {
         }
 
         composable("home") {
-            HomeScreen()  // Home screen after login
+            HomeScreen(navController = navController)
+        }
+
+        composable("sale") {
+            SaleScreen(navController = navController)
+        }
+
+        composable("cart") {
+            CartScreen(navController = navController)
+        }
+
+        composable("profile") {
+            ProfileScreen(navController = navController)
+        }
+
+        composable("menu") {
+            MenuScreen(navController = navController)
+        }
+
+        composable("feedback") {
+            FeedBackScreen(navController = navController)
+        }
+
+        composable("about") {
+            AboutScreen(navController = navController)
         }
     }
 }

@@ -25,15 +25,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.electricmarkets.R
 import viewmodel.ProductViewModel
 
 @Composable
-fun ProfileScreen(){
+fun ProfileScreen(navController: NavController){
     Column(modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally) {
 
-        HeadderScreen(productViewModel = ProductViewModel())
+        HeadderScreen(productViewModel = ProductViewModel(), navController = navController)
 
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -78,7 +79,9 @@ fun ProfileScreen(){
             }
         }
         // góp ý liên hệ
-        Card(onClick = {},
+        Card(onClick = {
+            navController.navigate("feedback")
+        },
             modifier = Modifier.fillMaxWidth().padding(8.dp)) {
             Row(modifier = Modifier.padding(8.dp),
                 verticalAlignment = Alignment.CenterVertically) {
@@ -104,7 +107,7 @@ fun ProfileScreen(){
             }
         }
         //giới thiệu công ty
-        Card(onClick = {},
+        Card(onClick = {navController.navigate("about")},
             modifier = Modifier.fillMaxWidth().padding(8.dp)) {
             Row(modifier = Modifier.padding(8.dp),
                 verticalAlignment = Alignment.CenterVertically) {
@@ -131,7 +134,7 @@ fun ProfileScreen(){
             }
         }
 
-        FooterScreen()
+        FooterScreen(navController = navController)
 
     }
 }

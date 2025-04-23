@@ -36,12 +36,13 @@ import com.example.electricmarkets.ProductCard
 import com.example.electricmarkets.R
 import viewmodel.ProductViewModel
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.navigation.NavController
 import com.example.electricmarkets.viewmodel.AuthViewModel
 import viewmodel.CartViewModel
 
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavController) {
     val productViewModel: ProductViewModel = viewModel()  // Lấy ViewModel
     val products by productViewModel.productList.observeAsState(emptyList())
     val cartViewModel: CartViewModel = viewModel()
@@ -55,9 +56,9 @@ fun HomeScreen() {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        HeadderScreen(productViewModel = productViewModel)
+        HeadderScreen(productViewModel = productViewModel, navController = navController)
 
-        MenuMiniSCreen()
+        //MenuMiniSCreen()
 
         LazyColumn(
             modifier = Modifier.fillMaxWidth().weight(1f)
@@ -97,7 +98,9 @@ fun HomeScreen() {
                             color = Color(0xFF165273),
                             modifier = Modifier.padding(0.dp)
                         )
-                        Card(onClick = {},
+                        Card(onClick = {
+                            navController.navigate("sale")
+                        },
                             colors = CardDefaults.cardColors(
                                 containerColor = Color(0xFF9DDEFB)
                             )) {
@@ -154,7 +157,7 @@ fun HomeScreen() {
             }
         }
 
-        FooterScreen()
+        FooterScreen(navController = navController)
     }
 }
 

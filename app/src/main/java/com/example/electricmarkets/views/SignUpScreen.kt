@@ -1,8 +1,11 @@
 package com.example.electricmarkets.views
 
 import android.util.Patterns
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -17,7 +20,14 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.electricmarkets.R
 @Composable
 fun SignUpScreen(
     navController: NavController,
@@ -37,10 +47,33 @@ fun SignUpScreen(
 
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Đăng Ký", style = MaterialTheme.typography.headlineSmall)
+        // header
+        Column(modifier = Modifier.background(color = Color(0xFF009AEC))
+        ) {
+            Box(modifier = Modifier.fillMaxWidth()
+                .padding(start = 32.dp, end = 32.dp, top = 48.dp, bottom = 16.dp),
+            ) {
+                Text("Electric Markets",
+                    color = Color(0xFFFBE025),
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth().padding(start = 56.dp, top = 8.dp)
+                )
+                Card(onClick = {
+                    navController.navigate("home")
+                },
+                    modifier = Modifier,
+                ) {
+                    Image(painter = painterResource(id = R.drawable.logoelectric),
+                        contentDescription = null,
+                        modifier = Modifier.size(56.dp))
+                }
+            }
+        }
 
         Spacer(modifier = Modifier.height(32.dp))
 
@@ -49,7 +82,8 @@ fun SignUpScreen(
             value = email,
             onValueChange = { email = it },
             label = { Text("Email") },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(8.dp),
+            shape = RoundedCornerShape(12.dp),
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Email
             )
@@ -61,7 +95,8 @@ fun SignUpScreen(
             value = password,
             onValueChange = { password = it },
             label = { Text("Mật khẩu") },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(8.dp),
+            shape = RoundedCornerShape(12.dp),
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Password
@@ -74,7 +109,8 @@ fun SignUpScreen(
             value = confirmPassword,
             onValueChange = { confirmPassword = it },
             label = { Text("Nhập lại mật khẩu") },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(8.dp),
+            shape = RoundedCornerShape(12.dp),
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Password
@@ -87,7 +123,8 @@ fun SignUpScreen(
             value = fullName,
             onValueChange = { fullName = it },
             label = { Text("Họ và tên") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().padding(8.dp),
+            shape = RoundedCornerShape(12.dp),
         )
 
         // Phone input
@@ -96,7 +133,8 @@ fun SignUpScreen(
             value = phone,
             onValueChange = { phone = it },
             label = { Text("Số điện thoại") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().padding(8.dp),
+            shape = RoundedCornerShape(12.dp),
         )
 
         // Address input
@@ -105,7 +143,8 @@ fun SignUpScreen(
             value = address,
             onValueChange = { address = it },
             label = { Text("Địa chỉ") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().padding(8.dp),
+            shape = RoundedCornerShape(12.dp),
         )
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -131,9 +170,12 @@ fun SignUpScreen(
                     onSignUpClick(email, password, fullName, phone, address)  // Pass all parameters
                 }
             },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF9DDEFB)
+            )
         ) {
-            Text("Đăng Ký")
+            Text("Đăng ký", fontSize = 32.sp, fontWeight = FontWeight.Bold)
         }
 
         Spacer(modifier = Modifier.height(16.dp))

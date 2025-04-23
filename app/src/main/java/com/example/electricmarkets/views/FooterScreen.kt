@@ -25,19 +25,22 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.electricmarkets.R
 
 
 @Composable
-fun FooterScreen() {
-    var selectedCard by remember { mutableStateOf(0) }
-
+fun FooterScreen(navController: NavController) {
     val items = listOf(
-        R.drawable.home to "Trang chủ",
-        R.drawable.sale1 to "Khuyến mãi",
-        R.drawable.shopping to "Giỏ hàng",
-        R.drawable.profileee to "Cá nhân"
+        Triple(R.drawable.home, "Trang chủ", "home"),
+        Triple(R.drawable.sale1, "Khuyến mãi", "sale"),
+        Triple(R.drawable.shopping, "Giỏ hàng", "cart"),
+        Triple(R.drawable.profileee, "Cá nhân", "profile")
     )
+
+    // Lấy route hiện tại
+    val currentRoute = navController.currentBackStackEntry?.destination?.route
+
 
     Row(
         modifier = Modifier
@@ -47,11 +50,20 @@ fun FooterScreen() {
             .clip(RoundedCornerShape(12.dp)),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        items.forEachIndexed { index, (iconRes, label) ->
+        items.forEach { (iconRes, label, route) ->
+            val isSelected = currentRoute == route
+
             Card(
-                onClick = { selectedCard = index },
+                onClick = {
+                    if (!isSelected) {
+                        navController.navigate(route) {
+                            popUpTo("home") { inclusive = false }
+                            launchSingleTop = true
+                        }
+                    }
+                },
                 colors = CardDefaults.cardColors(
-                    containerColor = if (selectedCard == index) Color.White else Color(0xFF9DDEFB),
+                    containerColor = if (isSelected) Color.White else Color(0xFF9DDEFB),
                     contentColor = Color.Black
                 ),
                 modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)

@@ -25,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.electricmarkets.ProductCard
 import com.example.electricmarkets.R
 import com.google.android.gms.analytics.ecommerce.Product
@@ -33,7 +34,7 @@ import viewmodel.CartViewModel
 import viewmodel.ProductViewModel
 
 @Composable
-fun CartScreen() {
+fun CartScreen(navController: NavController) {
     val cartViewModel: CartViewModel = viewModel()  // Lấy CartViewModel
     val productViewModel: ProductViewModel = viewModel()  // Lấy ProductViewModel
     val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""  // Lấy userId từ Firebase Auth
@@ -44,9 +45,9 @@ fun CartScreen() {
     val totalQuantity = cartItems.sumOf { it.quantity }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        HeadderScreen(productViewModel = productViewModel) // Pass productViewModel here
+        HeadderScreen(productViewModel = productViewModel, navController =  navController) // Pass productViewModel here
 
-        MenuMiniSCreen()
+        //MenuMiniSCreen(navController = navController)
 
         Column(
             modifier = Modifier.fillMaxWidth()
@@ -101,7 +102,7 @@ fun CartScreen() {
             }
         }
 
-        FooterScreen()
+        FooterScreen(navController = navController)
     }
 }
 

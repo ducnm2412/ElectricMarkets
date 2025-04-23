@@ -13,8 +13,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -27,12 +29,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.electricmarkets.R
 import viewmodel.ProductViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 
-fun HeadderScreen(productViewModel: ProductViewModel) {
+fun HeadderScreen(productViewModel: ProductViewModel,navController: NavController) {
     val searchKeyword = remember { mutableStateOf("") }  // Dùng để lưu từ khóa tìm kiếm
 
     // Cập nhật sản phẩm khi người dùng nhập từ khóa tìm kiếm
@@ -50,7 +54,9 @@ fun HeadderScreen(productViewModel: ProductViewModel) {
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth().padding(start = 56.dp, top = 8.dp)
             )
-            Card(
+            Card(onClick = {
+                navController.navigate("home")
+            },
                 modifier = Modifier,
             ) {
                 Image(painter = painterResource(id = R.drawable.logoelectric),
@@ -62,7 +68,7 @@ fun HeadderScreen(productViewModel: ProductViewModel) {
         Row(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 32.dp, vertical = 8.dp)
                 .background(Color.White, shape = RoundedCornerShape(28.dp))
-                .border(1.dp, Color.Black, shape = RoundedCornerShape(28.dp)),
+                .border(1.dp, Color.Gray, shape = RoundedCornerShape(28.dp)),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(painter = painterResource(id = R.drawable.search),
@@ -76,7 +82,14 @@ fun HeadderScreen(productViewModel: ProductViewModel) {
                 value = searchKeyword.value,
                 onValueChange = { searchKeyword.value = it },
                 label = { Text("Tìm kiếm sản phẩm...") },
-                modifier = Modifier.fillMaxWidth()
+                shape = RoundedCornerShape(28.dp),
+                colors = TextFieldDefaults.textFieldColors(
+                    containerColor = Color.White,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent
+                ),
+                modifier = Modifier.fillMaxWidth(),
             )
         }
     }
