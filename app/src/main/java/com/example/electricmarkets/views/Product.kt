@@ -28,6 +28,9 @@ import viewmodel.CartViewModel
 fun ProductCard(product: Product, cartViewModel: CartViewModel, authViewModel: AuthViewModel) {
     val isLoggedIn = FirebaseAuth.getInstance().currentUser != null  // Kiểm tra trạng thái đăng nhập
 
+    // Kiểm tra tài nguyên hình ảnh có hợp lệ không
+    val imageRes = if (product.image != 0) product.image else R.drawable.ic_launcher_background // Hoặc một hình ảnh khác có sẵn
+
     Card(
         modifier = Modifier
             .width(160.dp)
@@ -45,20 +48,16 @@ fun ProductCard(product: Product, cartViewModel: CartViewModel, authViewModel: A
             modifier = Modifier.padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Card(
-                onClick = {},
-                colors = CardDefaults.cardColors(containerColor = Color.White)
-            ) {
-                Image(
-                    painter = painterResource(id = product.image),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .height(80.dp)
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(8.dp)),
-                    contentScale = ContentScale.Fit
-                )
-            }
+            // Đảm bảo tài nguyên hình ảnh hợp lệ
+            Image(
+                painter = painterResource(id = imageRes),
+                contentDescription = null,
+                modifier = Modifier
+                    .height(80.dp)
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(8.dp)),
+                contentScale = ContentScale.Fit
+            )
 
             Spacer(modifier = Modifier.height(8.dp))
 

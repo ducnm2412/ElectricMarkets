@@ -11,23 +11,27 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.electricmarkets.ProductCard
 import com.example.electricmarkets.R
-import model.data.Product
+import com.example.electricmarkets.viewmodel.AuthViewModel
+import viewmodel.CartViewModel
+import viewmodel.ProductViewModel
 
 @Composable
 fun MenuScreen(){
 
-
+    val productViewModel: ProductViewModel = viewModel()  // Lấy ViewModel
+    val cartViewModel: CartViewModel = viewModel()
+    val authViewModel: AuthViewModel = viewModel()
+    val products by productViewModel.productList.observeAsState(emptyList())
 
     val menuMinis = List(12) {
         MenuMini(
@@ -38,7 +42,7 @@ fun MenuScreen(){
 
     Column(modifier = Modifier.fillMaxSize().background(color = Color.White)) {
 
-        HeadderScreen()
+        HeadderScreen(productViewModel = ProductViewModel())
 
         Row(modifier = Modifier.fillMaxWidth().weight(1f)) {
 
@@ -74,7 +78,7 @@ fun MenuScreen(){
                                 modifier = Modifier
                                     .weight(1f)
                             ) {
-                                ProductCard(product)
+                                ProductCard(product = product, cartViewModel = cartViewModel, authViewModel = authViewModel)
                             }
                         }
 

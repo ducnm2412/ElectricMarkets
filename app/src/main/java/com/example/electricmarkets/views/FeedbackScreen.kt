@@ -36,6 +36,7 @@ import com.example.electricmarkets.R
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.KeyboardType
+import viewmodel.ProductViewModel
 
 @Composable
 fun FeedBackScreen(){
@@ -48,7 +49,7 @@ fun FeedBackScreen(){
     Column(modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally) {
 
-        HeadderScreen()
+        HeadderScreen(productViewModel = ProductViewModel())
 
         Box{
             Row(modifier = Modifier.fillMaxWidth().padding(8.dp),

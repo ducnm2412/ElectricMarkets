@@ -26,13 +26,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.electricmarkets.R
+import viewmodel.ProductViewModel
 
 @Composable
 fun ProfileScreen(){
     Column(modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally) {
 
-        HeadderScreen()
+        HeadderScreen(productViewModel = ProductViewModel())
 
         Spacer(modifier = Modifier.height(24.dp))
 

@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
@@ -37,13 +36,16 @@ import com.example.electricmarkets.ProductCard
 import com.example.electricmarkets.R
 import viewmodel.ProductViewModel
 import androidx.compose.runtime.livedata.observeAsState
-
+import com.example.electricmarkets.viewmodel.AuthViewModel
+import viewmodel.CartViewModel
 
 
 @Composable
 fun HomeScreen() {
     val productViewModel: ProductViewModel = viewModel()  // Lấy ViewModel
     val products by productViewModel.productList.observeAsState(emptyList())
+    val cartViewModel: CartViewModel = viewModel()
+    val authViewModel: AuthViewModel = viewModel()
 
     // Gọi getProducts() để lấy dữ liệu từ Firebase khi màn hình được hiển thị
     LaunchedEffect(true) {
@@ -53,7 +55,7 @@ fun HomeScreen() {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        HeadderScreen()
+        HeadderScreen(productViewModel = productViewModel)
 
         MenuMiniSCreen()
 
@@ -80,7 +82,6 @@ fun HomeScreen() {
             }
 
             item {
-                // Sản phẩm giảm giá
                 Column(
                     modifier = Modifier.fillMaxWidth()
                         .background(color = Color(0xFF9DDEFB))
@@ -114,7 +115,7 @@ fun HomeScreen() {
                             horizontalArrangement = Arrangement.spacedBy(14.dp),
                         ) {
                             items(products) { product ->
-                                ProductCard(product)
+                                ProductCard(product = product, cartViewModel = cartViewModel, authViewModel = authViewModel)
                             }
                         }
                     }
@@ -142,7 +143,7 @@ fun HomeScreen() {
                             modifier = Modifier
                                 .weight(1f)
                         ) {
-                            ProductCard(product)
+                            ProductCard(product = product, cartViewModel = cartViewModel, authViewModel = authViewModel)
                         }
                     }
 
