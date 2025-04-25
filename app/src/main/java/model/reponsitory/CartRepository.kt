@@ -8,14 +8,20 @@ class CartRepository {
 
     // Thêm sản phẩm vào giỏ hàng
     fun addProductToCart(userId: String, productId: String, item: CartItem) {
-        db.child(userId).child(productId).setValue(item)
-            .addOnSuccessListener {
-                println("✅ Added to cart")
+        val userCartRef = db.child(userId).child(productId)
+
+        userCartRef.get().addOnSuccessListener {
+            if (it.exists()) {
+                // Nếu sản phẩm đã có trong giỏ, cập nhật số lượng
+                val currentQuantity = it.child("quantity").getValue(Int::class.java) ?: 0
+                userCartRef.child("quantity").setValue(currentQuantity + item.quantity)
+            } else {
+                // Nếu sản phẩm chưa có trong giỏ, thêm mới
+                userCartRef.setValue(item)
             }
-            .addOnFailureListener {
-                println("❌ Failed to add to cart: ${it.message}")
-            }
+        }
     }
+
 
     // Lấy tất cả sản phẩm trong giỏ hàng
     fun getCart(userId: String, onResult: (List<CartItem>) -> Unit) {
