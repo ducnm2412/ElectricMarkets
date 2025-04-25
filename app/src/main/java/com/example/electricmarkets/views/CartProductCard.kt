@@ -41,12 +41,11 @@ import model.data.Product
 import viewmodel.CartViewModel
 
 @Composable
-fun CartProductCard(cartItem: CartItem,cartViewModel: CartViewModel) {
+fun CartProductCard(cartItem: CartItem, cartViewModel: CartViewModel) {
     Card(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        )) {
-        Row (
+        colors = CardDefaults.cardColors(containerColor = Color.White)
+    ) {
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
@@ -79,17 +78,27 @@ fun CartProductCard(cartItem: CartItem,cartViewModel: CartViewModel) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(text = "Số lượng: ", fontSize = 14.sp)
-                    IconButton(onClick = { /* Giảm số lượng */ }) {
-                        Icon(painter = painterResource(id = R.drawable.tru), contentDescription = "Giảm")
+                    IconButton(onClick = {
+                        if (cartItem.quantity > 1) {
+                            // Giảm số lượng
+                            cartViewModel.updateQuantity(cartItem.productID, cartItem.quantity - 1)
+                        }
+                    }) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Giảm")
                     }
                     Text(text = "${cartItem.quantity}", fontSize = 14.sp)
-                    IconButton(onClick = { /* Tăng số lượng */ }) {
-                        Icon(painter = painterResource(id = R.drawable.add), contentDescription = "Tăng")
+                    IconButton(onClick = {
+                        // Tăng số lượng
+                        cartViewModel.updateQuantity(cartItem.productID, cartItem.quantity + 1)
+                    }) {
+                        Icon(Icons.Default.ArrowForward, contentDescription = "Tăng")
                     }
                 }
 
-                Row(modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
                     Button(
                         onClick = {
                             cartViewModel.removeItem(userId = FirebaseAuth.getInstance().currentUser?.uid ?: "", productId = cartItem.productID)
@@ -105,3 +114,4 @@ fun CartProductCard(cartItem: CartItem,cartViewModel: CartViewModel) {
         }
     }
 }
+

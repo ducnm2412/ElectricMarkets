@@ -2,6 +2,7 @@
 
     import androidx.lifecycle.MutableLiveData
     import androidx.lifecycle.ViewModel
+    import com.google.firebase.auth.FirebaseAuth
     import model.data.CartItem
     import model.data.Order
     import model.data.OrderItem
@@ -32,7 +33,14 @@
             repo.removeProduct(userId, productId)
             loadCart(userId)
         }
+        fun updateQuantity(productId: String, newQuantity: Int) {
+            val currentUserId = FirebaseAuth.getInstance().currentUser?.uid ?: return
 
+            // Cập nhật số lượng trong giỏ hàng
+            repo.updateQuantity(currentUserId, productId, newQuantity)
+
+            loadCart(currentUserId) // Reload lại giỏ hàng sau khi cập nhật
+        }
         // Mua hàng: thanh toán giỏ hàng và tạo đơn hàng
         fun checkoutCart(userUID: String, shippingAddress: String, onResult: (Boolean, String?) -> Unit) {
             repo.getCart(userUID) { cartItems ->

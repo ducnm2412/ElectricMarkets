@@ -3,6 +3,7 @@ package com.example.electricmarkets.views
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -35,17 +36,30 @@ import viewmodel.ProductViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-
-fun HeadderScreen(productViewModel: ProductViewModel,navController: NavController) {
+fun HeadderScreen(productViewModel: ProductViewModel, navController: NavController) {
     val searchKeyword = remember { mutableStateOf("") }  // Dùng để lưu từ khóa tìm kiếm
 
-    // Cập nhật sản phẩm khi người dùng nhập từ khóa tìm kiếm
-    LaunchedEffect(searchKeyword.value) {
-        productViewModel.searchProductsByName(searchKeyword.value)
-    }
+    // TextField cho việc nhập từ khóa tìm kiếm
+    TextField(
+        value = searchKeyword.value,
+        onValueChange = { newText ->
+            searchKeyword.value = newText
+        },
+        label = { Text("Tìm kiếm sản phẩm...") },
+        shape = RoundedCornerShape(28.dp),
+        colors = TextFieldDefaults.textFieldColors(
+            containerColor = Color.White,
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
+            disabledIndicatorColor = Color.Transparent
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 16.dp, end = 16.dp, top = 8.dp)
+    )
 
+    // Thêm Box để chứa các phần còn lại của Header
     Column(modifier = Modifier.background(color = Color(0xFF009AEC))) {
-
         Box(modifier = Modifier.fillMaxWidth().padding(start = 32.dp, end = 32.dp, top = 48.dp, bottom = 16.dp)) {
             Text("Electric Markets",
                 color = Color(0xFFFBE025),
@@ -54,30 +68,42 @@ fun HeadderScreen(productViewModel: ProductViewModel,navController: NavControlle
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth().padding(start = 56.dp, top = 8.dp)
             )
+
+            // Khi nhấn vào logo, chuyển hướng về Home screen
             Card(onClick = {
                 navController.navigate("home")
-            },
-                modifier = Modifier,
-            ) {
-                Image(painter = painterResource(id = R.drawable.logoelectric),
+            }) {
+                Image(
+                    painter = painterResource(id = R.drawable.logoelectric),
                     contentDescription = null,
-                    modifier = Modifier.size(56.dp))
+                    modifier = Modifier.size(56.dp)
+                )
             }
         }
 
+        // Tạo một Row chứa Image và TextField cho tìm kiếm
         Row(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 32.dp, vertical = 8.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 32.dp, vertical = 8.dp)
                 .background(Color.White, shape = RoundedCornerShape(28.dp))
                 .border(1.dp, Color.Gray, shape = RoundedCornerShape(28.dp)),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(painter = painterResource(id = R.drawable.search),
-                contentDescription = null,
-                modifier = Modifier.size(48.dp))
+            // Hình ảnh tìm kiếm
+            Image(
+                painter = painterResource(id = R.drawable.search),
+                contentDescription = "Tìm kiếm",
+                modifier = Modifier
+                    .size(48.dp)
+                    .clickable { // Khi nhấn vào hình ảnh, thực hiện tìm kiếm
+                        productViewModel.searchProductsByName(searchKeyword.value)
+                    }
+            )
 
             Spacer(modifier = Modifier.width(8.dp))
 
-            // TextField cho việc nhập từ khóa tìm kiếm
+            // Hiển thị TextField cho người dùng nhập từ khóa tìm kiếm
             TextField(
                 value = searchKeyword.value,
                 onValueChange = { searchKeyword.value = it },

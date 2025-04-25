@@ -13,14 +13,18 @@ import com.example.electricmarkets.views.AboutScreen
 import com.example.electricmarkets.views.CartScreen
 import com.example.electricmarkets.views.FeedBackScreen
 import com.example.electricmarkets.views.MenuScreen
+import com.example.electricmarkets.views.OrderDetailsScreen
 import com.example.electricmarkets.views.ProfileScreen
 import com.example.electricmarkets.views.SaleScreen
+import viewmodel.ContactViewModel
+import viewmodel.OrderViewModel
 
 @Composable
 fun Navigation() {
     val navController = rememberNavController()
     val authViewModel: AuthViewModel = viewModel()
-
+    val contactViewModel: ContactViewModel = viewModel()
+    val orderViewModel: OrderViewModel = viewModel()
     NavHost(navController = navController, startDestination = "login") {
         composable("login") {
             LoginScreen(
@@ -65,11 +69,14 @@ fun Navigation() {
         }
 
         composable("feedback") {
-            FeedBackScreen(navController = navController)
+            FeedBackScreen(navController = navController,contactViewModel = contactViewModel)
         }
 
         composable("about") {
             AboutScreen(navController = navController)
+        }
+        composable("orderDetailsScreen") {
+            OrderDetailsScreen(navController = navController,orderViewModel = OrderViewModel())
         }
     }
 }

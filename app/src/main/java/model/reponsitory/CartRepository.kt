@@ -37,7 +37,15 @@ class CartRepository {
     fun removeProduct(userId: String, productId: String) {
         db.child(userId).child(productId).removeValue()
     }
-
+    fun updateQuantity(userId: String, productId: String, newQuantity: Int) {
+        db.child(userId).child(productId).child("quantity").setValue(newQuantity)
+            .addOnSuccessListener {
+                println("✅ Updated product quantity")
+            }
+            .addOnFailureListener {
+                println("❌ Failed to update product quantity: ${it.message}")
+            }
+    }
     // Xóa toàn bộ giỏ hàng (hoặc có thể xóa khi đã thanh toán)
     fun clearCart(userId: String) {
         db.child(userId).removeValue()

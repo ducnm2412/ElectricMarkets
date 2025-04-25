@@ -36,7 +36,6 @@ import viewmodel.ProductViewModel
 @Composable
 fun CartScreen(navController: NavController) {
     val cartViewModel: CartViewModel = viewModel()  // Lấy CartViewModel
-    val productViewModel: ProductViewModel = viewModel()  // Lấy ProductViewModel
     val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""  // Lấy userId từ Firebase Auth
     val cartItems by cartViewModel.cartItems.observeAsState(emptyList())
 
@@ -44,10 +43,12 @@ fun CartScreen(navController: NavController) {
     val totalAmount = cartItems.sumOf { it.price * it.quantity }
     val totalQuantity = cartItems.sumOf { it.quantity }
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        HeadderScreen(productViewModel = productViewModel, navController =  navController) // Pass productViewModel here
+    LaunchedEffect(userId) {
+        cartViewModel.loadCart(userId)  // Tải giỏ hàng khi userId thay đổi
+    }
 
-        //MenuMiniSCreen(navController = navController)
+    Column(modifier = Modifier.fillMaxSize()) {
+        HeadderScreen(productViewModel = ProductViewModel(), navController =  navController) // Pass productViewModel here
 
         Column(
             modifier = Modifier.fillMaxWidth()
@@ -56,7 +57,7 @@ fun CartScreen(navController: NavController) {
         ) {
             LazyColumn(modifier = Modifier.padding(top = 8.dp)) {
                 items(cartItems) { cartItem ->
-                    // Convert CartItem to Product for CartProductCard
+                    // Hiển thị từng sản phẩm trong giỏ hàng
                     val product = model.data.Product(
                         id = cartItem.productID,
                         name = cartItem.productName,
@@ -89,10 +90,9 @@ fun CartScreen(navController: NavController) {
                         shippingAddress = "Địa chỉ giao hàng",
                         onResult = { success, message ->
                             if (success) {
-                                // Xử lý thành công (ví dụ: chuyển sang màn hình khác)
+                                navController.navigate("orderDetailsScreen")
                             } else {
-                                // Xử lý lỗi (ví dụ: hiển thị thông báo lỗi)
-                            }
+                                println(message)                            }
                         }
                     )
                 },
