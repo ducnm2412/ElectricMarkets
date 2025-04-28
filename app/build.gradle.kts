@@ -59,6 +59,7 @@ dependencies {
     implementation ("androidx.compose.material3:material3:1.0.0")
     implementation ("androidx.compose.foundation:foundation:1.1.0")
     implementation ("com.google.firebase:firebase-database:20.0.3")
+    implementation ("com.google.android.gms:play-services-auth:20.0.0")  // Phiên bản mới nhất
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)

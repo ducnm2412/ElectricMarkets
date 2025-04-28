@@ -38,26 +38,6 @@ import viewmodel.ProductViewModel
 @Composable
 fun HeadderScreen(productViewModel: ProductViewModel, navController: NavController) {
     val searchKeyword = remember { mutableStateOf("") }  // Dùng để lưu từ khóa tìm kiếm
-
-    // TextField cho việc nhập từ khóa tìm kiếm
-    TextField(
-        value = searchKeyword.value,
-        onValueChange = { newText ->
-            searchKeyword.value = newText
-        },
-        label = { Text("Tìm kiếm sản phẩm...") },
-        shape = RoundedCornerShape(28.dp),
-        colors = TextFieldDefaults.textFieldColors(
-            containerColor = Color.White,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-            disabledIndicatorColor = Color.Transparent
-        ),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 16.dp, end = 16.dp, top = 8.dp)
-    )
-
     // Thêm Box để chứa các phần còn lại của Header
     Column(modifier = Modifier.background(color = Color(0xFF009AEC))) {
         Box(modifier = Modifier.fillMaxWidth().padding(start = 32.dp, end = 32.dp, top = 48.dp, bottom = 16.dp)) {

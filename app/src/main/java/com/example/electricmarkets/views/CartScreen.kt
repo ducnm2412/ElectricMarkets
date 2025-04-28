@@ -105,4 +105,3 @@ fun CartScreen(navController: NavController) {
         FooterScreen(navController = navController)
     }
 }
-

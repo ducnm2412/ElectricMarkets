@@ -32,40 +32,96 @@ import androidx.navigation.NavController
 import com.example.electricmarkets.R
 import com.google.firebase.auth.FirebaseAuth
 import viewmodel.OrderViewModel
-
 @Composable
 fun OrderDetailsScreen(navController: NavController, orderViewModel: OrderViewModel) {
-    val userId = FirebaseAuth.getInstance().currentUser?.uid ?: "" // Lấy userId từ Firebase
-    val orders by orderViewModel.orderList.observeAsState(emptyList()) // Quan sát dữ liệu đơn hàng
+    // Get the logged-in user's ID
+    val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
 
-    // Lấy đơn hàng khi màn hình được hiển thị
+    // Observe orders data from the ViewModel
+    val orders by orderViewModel.orderList.observeAsState(emptyList())
+
+    // Fetch orders when the screen is displayed
     LaunchedEffect(Unit) {
         orderViewModel.getOrdersByUser(userID = userId)
     }
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-        Text("Thông Tin Đơn Hàng", fontWeight = FontWeight.Bold, fontSize = 22.sp, color = Color.White)
+        // Header
+        Text(
+            "THÔNG TIN ĐƠN HÀNG",
+            fontWeight = FontWeight.Bold,
+            fontSize = 22.sp,
+            color = Color.White,
+            modifier = Modifier
+                .background(Color(0xFF009AEC))
+                .fillMaxWidth()
+                .padding(16.dp),
+            textAlign = TextAlign.Center
+        )
 
-        // Kiểm tra nếu không có đơn hàng
-        if (orders.isEmpty()) {
-            Text("Không có đơn hàng", color = Color.Gray)
-        } else {
-            // Hiển thị các đơn hàng
+        // Customer Information
+        Spacer(modifier = Modifier.height(16.dp))
+        Text("Tên: ${FirebaseAuth.getInstance().currentUser?.displayName ?: "N/A"}", fontSize = 16.sp, fontWeight = FontWeight.Normal)
+        Text("Email: ${FirebaseAuth.getInstance().currentUser?.email ?: "N/A"}", fontSize = 16.sp, fontWeight = FontWeight.Normal)
+        // Address fetched from orders (if available)
+        Text("Địa chỉ: ${orders.firstOrNull()?.shippingAddress ?: "N/A"}", fontSize = 16.sp, fontWeight = FontWeight.Normal)
+
+        // Order Details Table
+        Spacer(modifier = Modifier.height(16.dp))
+        Column(
+            modifier = Modifier
+                .background(Color.White)
+                .border(1.dp, Color.LightGray)
+                .padding(16.dp)
+        ) {
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Text(text = "STT", modifier = Modifier.weight(0.2f))
+                Text(text = "Tên", modifier = Modifier.weight(1f))
+                Text(text = "SL", modifier = Modifier.weight(0.3f))
+                Text(text = "Giá", modifier = Modifier.weight(0.4f))
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Loop through each order item
+            var index = 1
             orders.forEach { order ->
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    Text("Mã đơn hàng: ${order.orderID}", fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                    Text("Tổng tiền: ${order.totalAmount} đ", fontSize = 14.sp)
-                    order.items.forEach { item ->
-                        Row(modifier = Modifier.fillMaxWidth()) {
-                            Text(item.productName, modifier = Modifier.weight(1f))
-                            Text("SL: ${item.quantity}", modifier = Modifier.weight(0.5f))
-                            Text("${item.price} đ", modifier = Modifier.weight(0.5f))
-                        }
+                order.items.forEach { item ->
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        Text(text = "$index", modifier = Modifier.weight(0.2f))  // For now, we're hardcoding the index as "1"
+                        Text(text = item.productName, modifier = Modifier.weight(1f))
+                        Text(text = "${item.quantity}", modifier = Modifier.weight(0.3f))
+                        Text(text = "${item.price} đ", modifier = Modifier.weight(0.4f))
                     }
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Divider()
+                    index++
+                    Spacer(modifier = Modifier.height(8.dp))
                 }
             }
         }
+
+        // Total Price
+        Spacer(modifier = Modifier.height(16.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Text(text = "Tổng tiền:", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+            // Calculate the total amount (you can get the sum from the order data)
+            val totalAmount = orders.sumOf { order -> order.items.sumOf { it.price * it.quantity } }
+            Text(text = "$totalAmount đ", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+        }
+
+        // QR code and footer
+        Spacer(modifier = Modifier.height(16.dp))
+        Image(
+            painter = painterResource(id = R.drawable.qr_code_image),  // Replace with your QR image
+            contentDescription = "QR Code",
+            modifier = Modifier
+                .size(100.dp)
+                .align(Alignment.CenterHorizontally)
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = "Quét mã QR để thanh toán",
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            fontSize = 14.sp,
+            color = Color.Gray
+        )
     }
 }
