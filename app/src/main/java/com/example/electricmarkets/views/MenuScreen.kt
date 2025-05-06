@@ -79,7 +79,7 @@ fun MenuScreen(navController: NavController){
                                 modifier = Modifier
                                     .weight(1f)
                             ) {
-                                ProductCard(product = product, cartViewModel = cartViewModel, authViewModel = authViewModel)
+                                ProductCard(product = product, cartViewModel = cartViewModel, authViewModel = authViewModel,navController = navController)
                             }
                         }
 

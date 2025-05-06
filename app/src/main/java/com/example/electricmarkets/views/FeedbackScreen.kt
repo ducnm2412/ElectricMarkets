@@ -39,6 +39,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
 import model.data.Contact
@@ -51,13 +52,10 @@ fun FeedBackScreen(navController: NavController, contactViewModel: ContactViewMo
     var name by remember { mutableStateOf("") }
     var phone by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
+    val productViewModel: ProductViewModel = viewModel()  // Lấy ViewModel
 
     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-
-        // Header phần logo và tiêu đề
-        Box(modifier = Modifier.fillMaxWidth().padding(start = 32.dp, end = 32.dp, top = 48.dp, bottom = 16.dp)) {
-            Text("Electric Markets", color = Color(0xFFFBE025), fontSize = 24.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
-        }
+        HeadderScreen(productViewModel = productViewModel, navController = navController)
 
         // Phần nhập thông tin góp ý
         OutlinedTextField(

@@ -7,10 +7,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -73,13 +75,17 @@ fun CartScreen(navController: NavController) {
         }
 
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            Text("Tổng sản phẩm:", fontSize = 16.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(start = 8.dp))
+            // Cập nhật kích thước chữ nhỏ hơn cho các dòng text
+            Text("Tổng sản phẩm:", fontSize = 14.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(start = 8.dp))
             Spacer(modifier = Modifier.width(8.dp))
-            Text("$totalQuantity", fontSize = 16.sp, fontWeight = FontWeight.Bold)
-            Spacer(modifier = Modifier.width(24.dp))
-            Text("Tổng tiền:", fontSize = 16.sp, fontWeight = FontWeight.Bold)
-            Text("$totalAmount đ", fontSize = 16.sp, fontWeight = FontWeight.Bold)
-            Spacer(modifier = Modifier.width(16.dp))
+            Text("$totalQuantity", fontSize = 14.sp, fontWeight = FontWeight.Bold)
+
+            Spacer(modifier = Modifier.width(16.dp)) // Thêm khoảng cách giữa các phần tử
+
+            Text("Tổng tiền:", fontSize = 14.sp, fontWeight = FontWeight.Bold)
+            Text("$totalAmount đ", fontSize = 14.sp, fontWeight = FontWeight.Bold)
+
+            Spacer(modifier = Modifier.weight(1f))  // Cấp phần không gian còn lại cho nút mua
 
             // Nút mua
             Button(
@@ -92,13 +98,25 @@ fun CartScreen(navController: NavController) {
                             if (success) {
                                 navController.navigate("orderDetailsScreen")
                             } else {
-                                println(message)                            }
+                                println(message)
+                            }
                         }
                     )
                 },
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF9DDEFB))
+                modifier = Modifier
+                    .padding(8.dp)  // Thêm padding cho nút
+                    .height(50.dp)  // Đặt chiều cao cho nút
+                    .width(120.dp),  // Đặt chiều rộng của nút
+                shape = RoundedCornerShape(20.dp),  // Bo góc cho nút
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF9DDEFB)),  // Màu nền của nút
+                elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 8.dp, pressedElevation = 12.dp)  // Thêm bóng cho nút khi nhấn
             ) {
-                Text("Mua", fontWeight = FontWeight.Bold)
+                Text(
+                    "Mua",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,  // Màu chữ trắng
+                    fontSize = 18.sp
+                )
             }
         }
 

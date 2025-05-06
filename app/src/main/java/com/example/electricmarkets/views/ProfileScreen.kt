@@ -35,28 +35,6 @@ fun ProfileScreen(navController: NavController){
         horizontalAlignment = Alignment.CenterHorizontally) {
 
         HeadderScreen(productViewModel = ProductViewModel(), navController = navController)
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Button(onClick = {},
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF9DDEFB)
-            )) {
-            Text("Đăng nhập", fontSize = 32.sp, fontWeight = FontWeight.Bold)
-        }
-
-        Text("Hoặc",
-            color = Color(0xFFB3B3B3))
-
-        Button(onClick = {},
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF9DDEFB)
-            )) {
-            Text("Đăng kí", fontSize = 32.sp, fontWeight = FontWeight.Bold)
-        }
-
         Spacer(modifier = Modifier.height(24.dp))
 
         Text("Hỗ trợ khách hàng",
@@ -65,72 +43,76 @@ fun ProfileScreen(navController: NavController){
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(16.dp)
         )
-        // tổng đài tư vấn
-        Card(onClick = {},
-            modifier = Modifier.fillMaxWidth().padding(8.dp)) {
-            Row(modifier = Modifier.padding(8.dp),
-                verticalAlignment = Alignment.CenterVertically) {
-                Image(painter = painterResource(id = R.drawable.phonecall),
-                    contentDescription = null,
-                    modifier = Modifier.size(56.dp).padding(end = 8.dp))
-                Text("Tổng đài tư vấn: 1900 1908 (7:00-21:30)",
-                    color = Color.Black,
-                    fontSize = 18.sp)
+        Column(modifier = Modifier.fillMaxSize().weight(1f)){
+            // tổng đài tư vấn
+            Card(onClick = {},
+                modifier = Modifier.fillMaxWidth().padding(8.dp)) {
+                Row(modifier = Modifier.padding(8.dp),
+                    verticalAlignment = Alignment.CenterVertically) {
+                    Image(painter = painterResource(id = R.drawable.phonecall),
+                        contentDescription = null,
+                        modifier = Modifier.size(56.dp).padding(end = 8.dp))
+                    Text("Tổng đài tư vấn: 1900 1908 (7:00-21:30)",
+                        color = Color.Black,
+                        fontSize = 18.sp)
+                }
             }
-        }
-        // góp ý liên hệ
-        Card(onClick = {
-            navController.navigate("feedback")
-        },
-            modifier = Modifier.fillMaxWidth().padding(8.dp)) {
-            Row(modifier = Modifier.padding(8.dp),
-                verticalAlignment = Alignment.CenterVertically) {
-                Image(painter = painterResource(id = R.drawable.mail),
-                    contentDescription = null,
-                    modifier = Modifier.size(56.dp).padding(end = 8.dp))
-                Text("Góp ý/Liên hệ",
-                    color = Color.Black,
-                    fontSize = 18.sp)
+            // góp ý liên hệ
+            Card(onClick = {
+                navController.navigate("feedback")
+            },
+                modifier = Modifier.fillMaxWidth().padding(8.dp)) {
+                Row(modifier = Modifier.padding(8.dp),
+                    verticalAlignment = Alignment.CenterVertically) {
+                    Image(painter = painterResource(id = R.drawable.mail),
+                        contentDescription = null,
+                        modifier = Modifier.size(56.dp).padding(end = 8.dp))
+                    Text("Góp ý/Liên hệ",
+                        color = Color.Black,
+                        fontSize = 18.sp)
+                }
             }
-        }
-        // ti kiếm siu thị
-        Card(onClick = {},
-            modifier = Modifier.fillMaxWidth().padding(8.dp)) {
-            Row(modifier = Modifier.padding(8.dp),
-                verticalAlignment = Alignment.CenterVertically) {
-                Image(painter = painterResource(id = R.drawable.map),
-                    contentDescription = null,
-                    modifier = Modifier.size(56.dp).padding(end = 8.dp))
-                Text("Tìm kiếm siêu thị",
-                    color = Color.Black,
-                    fontSize = 18.sp)
+            // ti kiếm siu thị
+            Card(onClick = {},
+                modifier = Modifier.fillMaxWidth().padding(8.dp)) {
+                Row(modifier = Modifier.padding(8.dp),
+                    verticalAlignment = Alignment.CenterVertically) {
+                    Image(painter = painterResource(id = R.drawable.map),
+                        contentDescription = null,
+                        modifier = Modifier.size(56.dp).padding(end = 8.dp))
+                    Text("Tìm kiếm siêu thị",
+                        color = Color.Black,
+                        fontSize = 18.sp)
+                }
             }
-        }
-        //giới thiệu công ty
-        Card(onClick = {navController.navigate("about")},
-            modifier = Modifier.fillMaxWidth().padding(8.dp)) {
-            Row(modifier = Modifier.padding(8.dp),
-                verticalAlignment = Alignment.CenterVertically) {
-                Image(painter = painterResource(id = R.drawable.bookmark),
-                    contentDescription = null,
-                    modifier = Modifier.size(56.dp).padding(end = 8.dp))
-                Text("Giới thiệu công ty ",
-                    color = Color.Black,
-                    fontSize = 18.sp)
+            //giới thiệu công ty
+            Card(onClick = {navController.navigate("about")},
+                modifier = Modifier.fillMaxWidth().padding(8.dp)) {
+                Row(modifier = Modifier.padding(8.dp),
+                    verticalAlignment = Alignment.CenterVertically) {
+                    Image(painter = painterResource(id = R.drawable.bookmark),
+                        contentDescription = null,
+                        modifier = Modifier.size(56.dp).padding(end = 8.dp))
+                    Text("Giới thiệu công ty ",
+                        color = Color.Black,
+                        fontSize = 18.sp)
+                }
             }
-        }
-        // lịch sử đặt hàng
-        Card(onClick = {},
-            modifier = Modifier.fillMaxWidth().padding(8.dp)) {
-            Row(modifier = Modifier.padding(8.dp),
-                verticalAlignment = Alignment.CenterVertically) {
-                Image(painter = painterResource(id = R.drawable.clock),
-                    contentDescription = null,
-                    modifier = Modifier.size(56.dp).padding(end = 8.dp),
-                    colorFilter = ColorFilter.tint(Color(0xFFB3B3B3)))
-                Text("Lịch sử đặt hàng",
-                    color = Color.Black,
-                    fontSize = 18.sp)
+            // lịch sử đặt hàng
+            Card(onClick = {
+                navController.navigate("historyOrderScreen")
+            },
+                modifier = Modifier.fillMaxWidth().padding(8.dp)) {
+                Row(modifier = Modifier.padding(8.dp),
+                    verticalAlignment = Alignment.CenterVertically) {
+                    Image(painter = painterResource(id = R.drawable.clock),
+                        contentDescription = null,
+                        modifier = Modifier.size(56.dp).padding(end = 8.dp),
+                        colorFilter = ColorFilter.tint(Color(0xFFB3B3B3)))
+                    Text("Lịch sử đặt hàng",
+                        color = Color.Black,
+                        fontSize = 18.sp)
+                }
             }
         }
 

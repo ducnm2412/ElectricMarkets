@@ -40,8 +40,22 @@
             orderRepository.updateOrderStatus(orderID, status)
         }
 
-        // Thêm đơn hàng vào Realtime Database (nếu cần)
         fun addOrder(order: Order, onResult: (Boolean, String?) -> Unit) {
-            orderRepository.addOrder(order, onResult)
+            orderRepository.addOrder(order) { success, orderId ->
+                if (success) {
+                    // Fetch the latest order after adding it
+                    getOrdersByUser(order.userID)
+                }
+                onResult(success, orderId)
+            }
+        }
+        fun getLatestOrder(userID: String) {
+            orderRepository.getOrdersByUser(userID) { orders ->
+                if (orders.isNotEmpty()) {
+                    orderList.value = listOf(orders.first())
+                } else {
+                    errorMessage.value = "Không có đơn hàng"
+                }
+            }
         }
     }

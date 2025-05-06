@@ -14,6 +14,8 @@ import com.example.electricmarkets.views.CartScreen
 import com.example.electricmarkets.views.FeedBackScreen
 import com.example.electricmarkets.views.MenuScreen
 import com.example.electricmarkets.views.OrderDetailsScreen
+import com.example.electricmarkets.views.OrderHistoryScreen
+import com.example.electricmarkets.views.ProductDetailScreen
 import com.example.electricmarkets.views.ProfileScreen
 import com.example.electricmarkets.views.SaleScreen
 import viewmodel.ContactViewModel
@@ -35,15 +37,15 @@ fun Navigation() {
 
         composable("signup") {
             SignUpScreen(
-                authViewModel = authViewModel,  // Passing the authViewModel
-                navController = navController,  // Passing the navController
+                authViewModel = authViewModel,
+                navController = navController,
                 onSignUpClick = { email, password, fullName, phone, address ->
                     authViewModel.register(email, password, fullName, phone, address) {
-                        navController.popBackStack()  // Go back to the login screen after successful registration
+                        navController.popBackStack()
                     }
                 },
                 onLoginClick = {
-                    navController.popBackStack()  // Go back to the login screen when the user has an account
+                    navController.popBackStack()
                 }
             )
         }
@@ -78,6 +80,14 @@ fun Navigation() {
         composable("orderDetailsScreen") {
             OrderDetailsScreen(navController = navController,orderViewModel = OrderViewModel())
         }
+        composable("historyOrderScreen") {
+            OrderHistoryScreen(navController = navController,orderViewModel = OrderViewModel())
+        }
+        composable("productDetailScreen/{productId}") { backStackEntry ->
+            val productId = backStackEntry.arguments?.getString("productId") ?: ""
+            ProductDetailScreen(navController = navController, productId = productId)
+        }
+
     }
 }
 

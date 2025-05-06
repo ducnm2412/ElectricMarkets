@@ -118,7 +118,7 @@ fun HomeScreen(navController: NavController) {
                             horizontalArrangement = Arrangement.spacedBy(14.dp),
                         ) {
                             items(products) { product ->
-                                ProductCard(product = product, cartViewModel = cartViewModel, authViewModel = authViewModel)
+                                ProductCard(product = product, cartViewModel = cartViewModel, authViewModel = authViewModel,navController = navController)
                             }
                         }
                     }
@@ -146,7 +146,7 @@ fun HomeScreen(navController: NavController) {
                             modifier = Modifier
                                 .weight(1f)
                         ) {
-                            ProductCard(product = product, cartViewModel = cartViewModel, authViewModel = authViewModel)
+                            ProductCard(product = product, cartViewModel = cartViewModel, authViewModel = authViewModel,navController = navController)
                         }
                     }
 

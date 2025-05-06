@@ -2,6 +2,7 @@ package com.example.electricmarkets
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -18,6 +19,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.electricmarkets.viewmodel.AuthViewModel
 import com.google.firebase.auth.FirebaseAuth
 import model.data.CartItem
@@ -25,9 +27,8 @@ import model.data.Product
 import viewmodel.CartViewModel
 
 @Composable
-fun ProductCard(product: Product, cartViewModel: CartViewModel, authViewModel: AuthViewModel) {
+fun ProductCard(product: Product, cartViewModel: CartViewModel, authViewModel: AuthViewModel,navController: NavController) {
     val isLoggedIn = FirebaseAuth.getInstance().currentUser != null  // Kiểm tra trạng thái đăng nhập
-
     // Kiểm tra tài nguyên hình ảnh có hợp lệ không
     val imageRes = if (product.image != 0) product.image else R.drawable.ic_launcher_background // Hoặc một hình ảnh khác có sẵn
 
@@ -39,7 +40,10 @@ fun ProductCard(product: Product, cartViewModel: CartViewModel, authViewModel: A
                 width = 2.dp,
                 color = Color(0xFF009AEC),
                 shape = RoundedCornerShape(12.dp)
-            ),
+            )
+            .clickable {
+                navController.navigate("productDetailScreen/${product.id}")
+            },
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(4.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)

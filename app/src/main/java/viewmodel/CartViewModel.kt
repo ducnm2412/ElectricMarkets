@@ -65,6 +65,9 @@
                         }
                     )
 
+                    // In ra để kiểm tra đơn hàng trước khi lưu
+                    println("Order being created: $order")
+
                     // Thêm đơn hàng vào Realtime Database
                     orderRepo.addOrder(order) { isSuccess, errorMessage ->
                         if (isSuccess) {

@@ -14,7 +14,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         if (remoteMessage.data.isNotEmpty()) {
             // Lấy dữ liệu từ thông báo
             val message = remoteMessage.data["message"]
-            val orderId = remoteMessage.data["orderId"] // Giả sử dữ liệu bao gồm orderId
+            val orderId = remoteMessage.data["orderId"]
 
             // Hiển thị thông báo
             showNotification(message, orderId)
@@ -51,3 +51,4 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         // Gửi token mới đến server hoặc sử dụng nếu cần
     }
 }
+

@@ -92,7 +92,7 @@ fun SaleScreen(navController: NavController) {
                 ) {
                     for (product in rowProducts) {
                         Box(modifier = Modifier.weight(1f)) {
-                            ProductCard(product = product, cartViewModel = cartViewModel, authViewModel = authViewModel)
+                            ProductCard(product = product, cartViewModel = cartViewModel, authViewModel = authViewModel,navController = navController)
                         }
                     }
 
