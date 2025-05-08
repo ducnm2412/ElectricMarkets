@@ -29,9 +29,19 @@ import viewmodel.CartViewModel
 @Composable
 fun ProductCard(product: Product, cartViewModel: CartViewModel, authViewModel: AuthViewModel,navController: NavController) {
     val isLoggedIn = FirebaseAuth.getInstance().currentUser != null  // Kiểm tra trạng thái đăng nhập
-    // Kiểm tra tài nguyên hình ảnh có hợp lệ không
-    val imageRes = if (product.image != 0) product.image else R.drawable.ic_launcher_background // Hoặc một hình ảnh khác có sẵn
-
+    val imageRes = when (product.image) {
+        2131165346 -> R.drawable.panasonic_1hp
+        2131165332 -> R.drawable.naga_1hp
+        2131165355 -> R.drawable.tcl_15hp
+        2131165295 -> R.drawable.electrolux_eci28d
+        2131165360 -> R.drawable.tu_lanh_samsung
+        2131165327 -> R.drawable.may_giat_panasonic
+        2131165323 -> R.drawable.loc_nuoc_ro
+        2131165362 -> R.drawable.xe_dap_robot
+        2131165357 -> R.drawable.tivi_lg_55
+        2131165274 -> R.drawable.casper_1hp
+        else -> R.drawable.ic_launcher_background
+    }
     Card(
         modifier = Modifier
             .width(160.dp)
