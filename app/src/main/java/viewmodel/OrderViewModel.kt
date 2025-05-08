@@ -52,7 +52,7 @@
         fun getLatestOrder(userID: String) {
             orderRepository.getOrdersByUser(userID) { orders ->
                 if (orders.isNotEmpty()) {
-                    orderList.value = listOf(orders.first())
+                    orderList.value = listOf(orders.last())
                 } else {
                     errorMessage.value = "Không có đơn hàng"
                 }

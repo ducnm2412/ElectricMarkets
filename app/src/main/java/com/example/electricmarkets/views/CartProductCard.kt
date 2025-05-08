@@ -42,6 +42,20 @@ import viewmodel.CartViewModel
 
 @Composable
 fun CartProductCard(cartItem: CartItem, cartViewModel: CartViewModel) {
+    val imageRes = when (cartItem.imageRes) {
+        2131165346 -> R.drawable.panasonic_1hp
+        2131165332 -> R.drawable.naga_1hp
+        2131165355 -> R.drawable.tcl_15hp
+        2131165295 -> R.drawable.electrolux_eci28d
+        2131165360 -> R.drawable.tu_lanh_samsung
+        2131165327 -> R.drawable.may_giat_panasonic
+        2131165323 -> R.drawable.loc_nuoc_ro
+        2131165362 -> R.drawable.xe_dap_robot
+        2131165357 -> R.drawable.tivi_lg_55
+        2131165274 -> R.drawable.casper_1hp
+        else -> R.drawable.ic_launcher_background  // Hình ảnh mặc định
+    }
+
     Card(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
@@ -61,7 +75,7 @@ fun CartProductCard(cartItem: CartItem, cartViewModel: CartViewModel) {
 
             // Hiển thị hình ảnh sản phẩm
             Image(
-                painter = painterResource(id = cartItem.imageRes), // Đây là hình ảnh của sản phẩm
+                painter = painterResource(id = imageRes), // Đây là hình ảnh của sản phẩm
                 contentDescription = null,
                 modifier = Modifier
                     .size(80.dp)
@@ -114,4 +128,5 @@ fun CartProductCard(cartItem: CartItem, cartViewModel: CartViewModel) {
         }
     }
 }
+
 

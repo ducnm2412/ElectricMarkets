@@ -34,7 +34,6 @@ import com.google.firebase.auth.FirebaseAuth
 import model.data.CartItem
 import viewmodel.CartViewModel
 import viewmodel.ProductViewModel
-
 @Composable
 fun ProductDetailScreen(navController: NavController, productId: String) {
     val productViewModel: ProductViewModel = viewModel()
@@ -46,25 +45,23 @@ fun ProductDetailScreen(navController: NavController, productId: String) {
         productViewModel.getProductDetails(productId)
     }
 
-    Column(modifier = Modifier.fillMaxSize(),
+    Column(
+        modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement =Arrangement.Center) {
+        verticalArrangement = Arrangement.Center
+    ) {
         HeadderScreen(productViewModel = ProductViewModel(), navController = navController)
 
         Card(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-                containerColor = Color(0xFFDDDDDD)
-            ),
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 8.dp
-            )
+            colors = CardDefaults.cardColors(containerColor = Color(0xFFDDDDDD)),
+            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth().padding(8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Card (onClick = {navController.navigate("home")},
+                Card(onClick = { navController.navigate("home") },
                     modifier = Modifier.padding(start = 16.dp)) {
                     Image(painter = painterResource(id = R.drawable.back),
                         contentDescription = null,
@@ -76,12 +73,29 @@ fun ProductDetailScreen(navController: NavController, productId: String) {
                     modifier = Modifier.padding(start = 32.dp))
             }
         }
+
         if (errorMessage != null) {
             Text(text = errorMessage ?: "", color = Color.Red, fontWeight = FontWeight.Bold)
         } else {
             product?.let {
+                // Ánh xạ ID hình ảnh sang tài nguyên drawable
+                val imageRes = when (it.image) {
+                    2131165346 -> R.drawable.panasonic_1hp
+                    2131165332 -> R.drawable.naga_1hp
+                    2131165355 -> R.drawable.tcl_15hp
+                    2131165295 -> R.drawable.electrolux_eci28d
+                    2131165360 -> R.drawable.tu_lanh_samsung
+                    2131165327 -> R.drawable.may_giat_panasonic
+                    2131165323 -> R.drawable.loc_nuoc_ro
+                    2131165362 -> R.drawable.xe_dap_robot
+                    2131165357 -> R.drawable.tivi_lg_55
+                    2131165274 -> R.drawable.casper_1hp
+                    else -> R.drawable.ic_launcher_background  // Hình ảnh mặc định
+                }
+
+                // Hiển thị hình ảnh sản phẩm
                 Image(
-                    painter = painterResource(it.image),
+                    painter = painterResource(id = imageRes),
                     contentDescription = "Product Image",
                     modifier = Modifier.size(250.dp).fillMaxWidth().padding(16.dp),
                 )
@@ -143,4 +157,3 @@ fun ProductDetailScreen(navController: NavController, productId: String) {
         FooterScreen(navController = navController)
     }
 }
-
