@@ -14,12 +14,11 @@ class ProductViewModel : ViewModel() {
     val productList: MutableLiveData<List<Product>> = MutableLiveData()
     val errorMessage = MutableLiveData<String>()
     private val cartRepository = CartRepository()
-    val allProducts = MutableLiveData<List<Product>>() // All products
-    val filteredProducts = MutableLiveData<List<Product>>() // Filtered products based on search
+    val allProducts = MutableLiveData<List<Product>>()
+    val filteredProducts = MutableLiveData<List<Product>>()
     val cartItems = MutableLiveData<List<CartItem>>()
 
-    val productDetails: MutableLiveData<Product?> = MutableLiveData()  // Added this property to hold product details
-
+    val productDetails: MutableLiveData<Product?> = MutableLiveData()
     fun loadCart(userId: String) {
         repo.getCart(userId) { list ->
             cartItems.value = list
@@ -42,19 +41,7 @@ class ProductViewModel : ViewModel() {
         productList.value = filtered
     }
 
-    fun updateQuantity(productId: String, newQuantity: Int) {
-        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid ?: return
-        repo.updateQuantity(currentUserId, productId, newQuantity)
-        loadCart(currentUserId) // Reload the cart after updating
-    }
 
-    fun filterByCategory(category: String) {
-        val all = productList.value ?: return
-        val filtered = all.filter { it.category == category }
-        productList.value = filtered
-    }
-
-    // Fetch product details by product ID
     fun getProductDetails(productId: String) {
         productRepository.getProductById(productId) { product ->
             if (product != null) {

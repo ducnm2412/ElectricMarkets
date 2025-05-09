@@ -13,7 +13,6 @@
         val orderList = MutableLiveData<List<Order>>()
         val errorMessage = MutableLiveData<String>()
 
-        // Lấy tất cả đơn hàng của người dùng
         fun getOrdersByUser(userID: String) {
             orderRepository.getOrdersByUser(userID) { orders ->
                 if (orders.isNotEmpty()) {
@@ -24,7 +23,6 @@
             }
         }
 
-        // Lấy lịch sử đơn hàng của người dùng
         fun getOrderHistory(userID: String) {
             orderRepository.getOrdersByUser(userID) { orders ->
                 if (orders.isNotEmpty()) {
@@ -35,7 +33,6 @@
             }
         }
 
-        // Cập nhật trạng thái đơn hàng
         fun updateOrderStatus(orderID: String, status: String) {
             orderRepository.updateOrderStatus(orderID, status)
         }

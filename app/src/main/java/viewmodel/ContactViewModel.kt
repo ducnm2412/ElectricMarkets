@@ -19,10 +19,4 @@ class ContactViewModel : ViewModel() {
         }
     }
 
-    // Lấy góp ý (nếu cần xem lại)
-    fun getContact(userID: String) {
-        repository.getContact(userID) { contact ->
-            contactData.value = contact
-        }
-    }
 }

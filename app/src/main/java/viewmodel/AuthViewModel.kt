@@ -51,7 +51,7 @@ class AuthViewModel : ViewModel() {
             onSuccess = {
                 val uid = auth.currentUser?.uid
                 if (uid != null) {
-                    val user = User(  // Tạo đối tượng User từ model.data
+                    val user = User(
                         uid = uid,
                         email = email,
                         fullName = fullName,
@@ -81,24 +81,4 @@ class AuthViewModel : ViewModel() {
         errorMessage.value = message
     }
 
-    fun fetchProducts() {
-        database.child("products").get().addOnSuccessListener { snapshot ->
-            if (snapshot.exists()) {
-                val products = snapshot.children.map { dataSnapshot ->
-                    dataSnapshot.getValue(Product::class.java)
-                }.filterNotNull()
-
-                productList.value = products
-            } else {
-                errorMessage.value = "No products found"
-            }
-        }.addOnFailureListener {
-            errorMessage.value = "Failed to fetch products: ${it.message}"
-        }
-    }
-
-    // Sửa lại phương thức này
-    fun saveUserInfo(userId: String, user: User) {
-        database.child("users").child(userId).setValue(user)
-    }
 }
